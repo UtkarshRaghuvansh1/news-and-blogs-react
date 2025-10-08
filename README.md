@@ -1,18 +1,43 @@
-# React + Vite
+# News and Blogs
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
 
-Currently, two official plugins are available:
+- The News & Blogs Website is a modern, full-featured web application built with React that combines real-time global news updates with personal blogging capabilities. The platform provides users with an engaging space to read, explore, and create content — all within a sleek, responsive, and dark-themed interface.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- The home page presents a visually rich dashboard featuring:
 
-## React Compiler
+  - Latest News Section: A dynamic feed displaying top headlines and category-based articles fetched from live APIs.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+  - Featured Article: A large, prominent story designed to capture user attention.
 
-## Expanding the ESLint configuration
+  - Category Sidebar: Easy navigation across topics like Business, Technology, Sports, Health, and more.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+  - My Blogs Section: Personalized space where users can create, edit, and view their own blog posts.
+
+  - Weather & Calendar Widgets: Real-time weather updates and an interactive calendar for improved user engagement.
+
+- Users can also search for news, bookmark favorite articles, and filter content based on interest — ensuring a personalized reading experience.
+
+- Designed with a focus on usability, interactivity, and aesthetics, the News & Blogs platform offers a seamless blend of news consumption and content creation, making it both informative and social.
+
+## Design and Layout for the website
 
 ![alt text](image.png)
+
+## System Components
+
+- NewsFeed: Displays list/grid of articles.
+- CategorySidebar: List of categories (General, World, Tech, etc.).
+- NewsCard: Individual article card (image, title, short desc, bookmark icon).
+- SearchBar: For searching specific news titles.
+- WeatherWidget: Shows current weather (e.g., Tbilisi - 30°C Clear).
+- CalendarWidget: Displays date and highlights current day.
+- MyBlogsSection: Displays personal blog posts (user-created content).
+
+## Core Objective
+
+- The News section should:
+  - Fetch and display categorized news articles.
+  - Allow users to search, filter by category, and bookmark.
+  - Show trending or recent articles prominently.
+  - Support dynamic updates (new articles, weather, date, etc.).

@@ -6,7 +6,7 @@
   box-sizing: border-box;
   outline: none;
   text-decoration: none;
-  font-size: "kanit", "sans-serif";
+  font-family: "kanit", sans-serif;
 }
 
 /* Reducing font-size of 1 rem to 10px */

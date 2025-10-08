@@ -1,0 +1,101 @@
+.news {
+  font-size: 2rem;
+  color: white;
+
+  /* Width and height */
+  width: 100%;
+  height: 100%;
+
+  /* Flex Box for layout (Header + News Content + Footer */
+  display: flex;
+  flex-direction: column; /* align vertically*/
+  justify-content: space-between;
+  row-gap: 2rem;
+}
+
+/* Styling Header section  */
+.news-header {
+  width: 100%;
+  min-height: 7rem;
+  background-color: #111214;
+  border-radius: 1rem 1rem 0 0;
+}
+/* Styling News Content */
+.news-content {
+  display: flex;
+  column-gap: 2rem;
+  /* calc() - helpful when creating responsive layout 
+  when e want to combine different unit of measurment
+  Here dynamic calc height using REM and PERC unit 
+  100% of parent container - 16 rem  */
+
+  /* 16 rem = 7 rem header + 2*2 rem gap + 5 rem footer  */
+  height: calc(100% - 16rem);
+  padding: 0 2rem;
+}
+/* Styling Footer*/
+.news-footer {
+  width: 100%;
+  min-height: 5rem;
+  background-color: #111214;
+  border-radius: 0 0 1rem 1rem;
+}
+/* Styling navbar*/
+.navbar {
+  width: 18rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  row-gap: 2rem;
+}
+.user {
+  width: 100%;
+  height: 20%;
+  background-color: #111214;
+  border-radius: 1rem;
+}
+.categories {
+  width: 100%;
+  height: calc(80% - 2rem);
+  background-color: #111214;
+  border-radius: 1rem;
+}
+/* Styling news section */
+.news-section {
+  /* clamp() - allows to set values within epecified range */
+  /* 1st param - min width */
+  /* 2nd param - constianer query length relative to size of container (43%)*/
+  /* 3rd param - max width  */
+  width: clamp(30rem, 40cqi, 40%);
+  height: 100%;
+  border-radius: 1rem;
+}
+/* headline */
+.headline {
+  width: 100%;
+  height: calc(50% - 2rem);
+  background-color: #111214;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+}
+.news-grid {
+  width: 100%;
+  height: 50%;
+  background-color: #111214;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+}
+/* Styling My Blog section */
+.my-blogs {
+  width: clamp(20rem, 27cqi, 28%);
+  height: 100%;
+  background-color: #111214;
+  border-radius: 1rem;
+}
+/* Styleing Weather and calender component*/
+.weather-calender {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  row-gap: 2rem;
+}

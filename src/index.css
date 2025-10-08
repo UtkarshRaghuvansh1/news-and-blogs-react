@@ -8,3 +8,24 @@
   text-decoration: none;
   font-size: "kanit", "sans-serif";
 }
+
+/* Reducing font-size of 1 rem to 10px */
+html {
+  font-size: 62.5%;
+}
+
+.container {
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(to right, #b88efc, #6877f4);
+  /* move content to center  */
+  display: grid;
+  place-items: center;
+}
+.news-and-blog {
+  width: 95vw; /*95%*/
+  height: 95vmin; /* Minimum (dimesion of width of screen, diemsion of height of screen) */
+  background-color: #060709;
+  box-shadow: 0 2rem 3rem rgba(0, 0, 0, 0.5);
+  border-radius: 1rem; /* 10px */
+}

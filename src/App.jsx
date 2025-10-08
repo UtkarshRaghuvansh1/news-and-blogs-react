@@ -1,8 +1,10 @@
 import News from "./components/News";
 function App() {
   return (
-    <div>
-      <News />
+    <div className="container">
+      <div className="news-and-blog">
+        <News />
+      </div>
     </div>
   );
 }

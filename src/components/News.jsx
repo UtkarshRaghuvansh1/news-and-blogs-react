@@ -25,12 +25,23 @@ export default function News() {
   useEffect(() => {
     // 3. Create a Asynchronous function to fetch the data from api
     const fetchNews = async () => {
-      const gnewsURL =
-        "https://gnews.io/api/v4/top-headlines?category=general&apikey=e44e09001f7655277af07cd5512bf391";
-
       // use thunderclient to test this url in VS code
       // It takes http req and reponse in JSON format
+      const gnewsURL =
+        "https://gnews.io/api/v4/top-headlines?category=general&lang=en&apikey=e44e09001f7655277af07cd5512bf391";
+
+      // 4. Taking response from API
+      // await keyword is used to pause the execution of async function until the promise returned by axios.get is resolved
+      //axios.get() -> Get request to url to get data from API
+      const response = await axios.get(gnewsURL);
+      // console.log(response);
+      const fetchedNews = response.data.articles;
+      // console.log(fetchedNews);
+
+      // 5. Update the headline news
+      setHeadline(fetchedNews[0]);
     };
+    fetchNews();
   }, []);
 
   return (
@@ -93,15 +104,16 @@ export default function News() {
         </div>
         {/* News Component -> headline + news grid  */}
         <div className="news-section">
-          <div className="headline">
-            <img src={techImg} alt="Headline Image" />
-            <h2 className="headline-title">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat,
-              beatae? Lorem ipsum dolor sit amet.
-              {/* Bookmark  */}
-              <i className="fa-regular fa-bookmark bookmark"></i>
-            </h2>
-          </div>
+          {headline && (
+            <div className="headline">
+              <img src={headline.image} alt={headline.title} />
+              <h2 className="headline-title">
+                {headline.title}
+                <i className="fa-regular fa-bookmark bookmark"></i>
+              </h2>
+              <p>{headline.description}</p>
+            </div>
+          )}
           <div className="news-grid">
             <div className="news-grid-item">
               <img src={techImg} alt="Tech Image" />

@@ -61,3 +61,27 @@ npm install axios
 - Requires an API key (free plan available).
 
 - Official website: https://gnews.io
+
+### Errors
+
+- Uncaught Error: Objects are not valid as a React child (found: object with keys {id, title, description, content, url, image, publishedAt, lang, source}). If you meant to render a collection of children, use an array instead.
+- Conditional Rendering
+- While fetching data from api and display the headline
+- Fix :
+  - You only render when headline exists (headline && ... avoids null errors).
+  - You show proper fields like image, title, and description.
+
+```js
+{
+  headline && (
+    <div className="headline">
+      <img src={headline.image} alt={headline.title} />
+      <h2 className="headline-title">
+        {headline.title}
+        <i className="fa-regular fa-bookmark bookmark"></i>
+      </h2>
+      <p>{headline.description}</p>
+    </div>
+  );
+}
+```

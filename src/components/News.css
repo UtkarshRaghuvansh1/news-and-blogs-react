@@ -12,14 +12,54 @@
   justify-content: space-between;
   row-gap: 2rem;
 }
-
+/* *********************************************************************** */
 /* Styling Header section  */
 .news-header {
   width: 100%;
   min-height: 7rem;
   background-color: #111214;
   border-radius: 1rem 1rem 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 4rem;
 }
+.logo {
+  font-family: "Bebas-neue", sans-serif;
+  font-size: 5rem;
+  color: #ddd;
+  letter-spacing: 0.2rem;
+}
+.search-bar {
+  position: relative;
+}
+.search-bar input {
+  width: 25rem;
+  height: 4rem;
+  background-color: #060709;
+  border: none;
+  border-radius: 5rem;
+  padding: 0 4rem 0 2rem;
+  color: #ddd;
+}
+/* On focus increase width  */
+.search-bar input:focus {
+  width: 35rem;
+}
+.search-bar input:focus::placeholder {
+  color: transparent;
+}
+.search-bar button {
+  background-color: transparent;
+  border: none;
+  position: absolute; /* btn will position according to parent element so set parent pos relative */
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%); /* center button vertically*/
+  color: #bbb;
+  font-size: 1.8rem;
+}
+/* ******************************************************************************* */
 /* Styling News Content */
 .news-content {
   display: flex;

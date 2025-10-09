@@ -9,14 +9,20 @@ export default function News() {
         <div className="search-bar">
           <form>
             <input type="text" placeholder="Search News..." />
-            <i className="fa-solid fa-magnifying-glass"></i>
+            <button type="submit">
+              <i className="fa-solid fa-magnifying-glass"></i>
+            </button>
           </form>
         </div>
       </header>
       <div className="news-content">
         {/* Navbar Component  */}
         <div className="navbar">
-          <div className="user">User</div>
+          <div className="user">
+            {/* To use image in react we need to import it */}
+            <img src="" alt="" />
+            <p>Utkarsh's Blog</p>
+          </div>
           <div className="categories">Categories</div>
         </div>
         {/* News Component -> headline + news grid  */}

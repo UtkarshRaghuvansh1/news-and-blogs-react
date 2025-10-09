@@ -74,7 +74,7 @@ export default function News() {
             <img src={techImg} alt="Headline Image" />
             <h2 className="headline-title">
               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat,
-              beatae?
+              beatae? Lorem ipsum dolor sit amet.
               {/* Bookmark  */}
               <i className="fa-regular fa-bookmark bookmark"></i>
             </h2>
@@ -82,33 +82,45 @@ export default function News() {
           <div className="news-grid">
             <div className="news-grid-item">
               <img src={techImg} alt="Tech Image" />
-              <h3>Lorem ipsum dolor sit amet.</h3>
-              <i className="fa-regular fa-bookmark bookmark"></i>
+              <h3>
+                Lorem ipsum dolor sit amet.
+                <i className="fa-regular fa-bookmark bookmark"></i>
+              </h3>
             </div>
             <div className="news-grid-item">
               <img src={sportsImg} alt="Sports Image" />
-              <h3>Lorem ipsum dolor sit amet.</h3>
-              <i className="fa-regular fa-bookmark bookmark"></i>
+              <h3>
+                Lorem ipsum dolor sit amet.
+                <i className="fa-regular fa-bookmark bookmark"></i>
+              </h3>
             </div>
             <div className="news-grid-item">
               <img src={scienceImg} alt="Science Image" />
-              <h3>Lorem ipsum dolor sit amet.</h3>
-              <i className="fa-regular fa-bookmark bookmark"></i>
+              <h3>
+                Lorem ipsum dolor sit amet.
+                <i className="fa-regular fa-bookmark bookmark"></i>
+              </h3>
             </div>
             <div className="news-grid-item">
               <img src={worldImg} alt="World Image" />
-              <h3>Lorem ipsum dolor sit amet.</h3>
-              <i className="fa-regular fa-bookmark bookmark"></i>
+              <h3>
+                Lorem ipsum dolor sit amet.
+                <i className="fa-regular fa-bookmark bookmark"></i>
+              </h3>
             </div>
             <div className="news-grid-item">
               <img src={healthImg} alt="" />
-              <h3>Lorem ipsum dolor sit amet.</h3>
-              <i className="fa-regular fa-bookmark bookmark"></i>
+              <h3>
+                Lorem ipsum dolor sit amet.
+                <i className="fa-regular fa-bookmark bookmark"></i>
+              </h3>
             </div>
             <div className="news-grid-item">
               <img src={nationImg} alt="Nation Image" />
-              <h3>Lorem ipsum dolor sit amet.</h3>
-              <i className="fa-regular fa-bookmark bookmark"></i>
+              <h3>
+                Lorem ipsum dolor sit amet.
+                <i className="fa-regular fa-bookmark bookmark"></i>
+              </h3>
             </div>
           </div>
         </div>

@@ -25,7 +25,7 @@ export default function News() {
             <p>Utkarsh's Blog</p>
           </div>
           <div className="categories">
-            <h1 className="nav-heading"></h1>
+            <h1 className="nav-heading">Categories </h1>
             <div className="nav-links">
               <a href="" className="nav-link">
                 General

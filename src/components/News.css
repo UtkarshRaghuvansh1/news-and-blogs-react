@@ -137,7 +137,13 @@
   letter-spacing: 0.1rem;
   display: flex;
   align-items: center;
+  position: relative;
 }
+/* Hover effect */
+.nav-link:hover {
+  color: #ff4d4d; /* lighter red on hover */
+}
+
 .nav-link i {
   font-size: 1.7rem;
   margin-left: 1rem;

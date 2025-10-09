@@ -40,6 +40,9 @@ export default function News() {
 
       // 5. Update the headline news
       setHeadline(fetchedNews[0]);
+      const slicedNews = fetchedNews.slice(1, 7);
+      // console.log("Fetched 6 articles:", slicedNews);
+      setNews(slicedNews);
     };
     fetchNews();
   }, []);
@@ -111,52 +114,21 @@ export default function News() {
                 {headline.title}
                 <i className="fa-regular fa-bookmark bookmark"></i>
               </h2>
-              <p>{headline.description}</p>
             </div>
           )}
           <div className="news-grid">
-            <div className="news-grid-item">
-              <img src={techImg} alt="Tech Image" />
-              <h3>
-                Lorem ipsum dolor sit amet.
-                <i className="fa-regular fa-bookmark bookmark"></i>
-              </h3>
-            </div>
-            <div className="news-grid-item">
-              <img src={sportsImg} alt="Sports Image" />
-              <h3>
-                Lorem ipsum dolor sit amet.
-                <i className="fa-regular fa-bookmark bookmark"></i>
-              </h3>
-            </div>
-            <div className="news-grid-item">
-              <img src={scienceImg} alt="Science Image" />
-              <h3>
-                Lorem ipsum dolor sit amet.
-                <i className="fa-regular fa-bookmark bookmark"></i>
-              </h3>
-            </div>
-            <div className="news-grid-item">
-              <img src={worldImg} alt="World Image" />
-              <h3>
-                Lorem ipsum dolor sit amet.
-                <i className="fa-regular fa-bookmark bookmark"></i>
-              </h3>
-            </div>
-            <div className="news-grid-item">
-              <img src={healthImg} alt="" />
-              <h3>
-                Lorem ipsum dolor sit amet.
-                <i className="fa-regular fa-bookmark bookmark"></i>
-              </h3>
-            </div>
-            <div className="news-grid-item">
-              <img src={nationImg} alt="Nation Image" />
-              <h3>
-                Lorem ipsum dolor sit amet.
-                <i className="fa-regular fa-bookmark bookmark"></i>
-              </h3>
-            </div>
+            {news.map((article, index) => {
+              // Key prop -> To uniquely identify each element which helps in efficient rendering of list
+              return (
+                <div key={index} className="news-grid-item">
+                  <img src={article.image} alt={article.title} />
+                  <h3>
+                    {article.title}
+                    <i className="fa-regular fa-bookmark bookmark"></i>
+                  </h3>
+                </div>
+              );
+            })}
           </div>
         </div>
         {/* My Blog section  */}

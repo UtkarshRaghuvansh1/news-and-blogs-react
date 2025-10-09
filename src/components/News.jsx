@@ -4,7 +4,15 @@ import "./News.css";
 export default function News() {
   return (
     <div className="news">
-      <header className="news-header">News Header</header>
+      <header className="news-header">
+        <h1 className="logo">News & Blog</h1>
+        <div className="search-bar">
+          <form>
+            <input type="text" placeholder="Search News..." />
+            <i className="fa-solid fa-magnifying-glass"></i>
+          </form>
+        </div>
+      </header>
       <div className="news-content">
         {/* Navbar Component  */}
         <div className="navbar">

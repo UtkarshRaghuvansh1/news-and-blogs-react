@@ -41,3 +41,23 @@
   - Allow users to search, filter by category, and bookmark.
   - Show trending or recent articles prominently.
   - Support dynamic updates (new articles, weather, date, etc.).
+
+Features & API Usage
+
+- HTTP Client: Using Axios to make HTTP requests from React components.
+
+- Promise-based, simple syntax, and handles errors easily.
+
+- Installed via:
+
+```shell
+npm install axios
+```
+
+- News API: Using GNews API to fetch latest news articles.
+
+- Provides global news headlines and articles.
+
+- Requires an API key (free plan available).
+
+- Official website: https://gnews.io

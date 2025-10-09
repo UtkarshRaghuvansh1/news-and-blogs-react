@@ -8,8 +8,31 @@ import scienceImg from "../assets/images/science.jpg";
 import worldImg from "../assets/images/world.jpg";
 import healthImg from "../assets/images/health.jpg";
 import nationImg from "../assets/images/nation.jpg";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 export default function News() {
+  // 1. State Declaration
+  //State for storing Current value of headline data, Initially null
+  const [headline, setHeadline] = useState(null);
+  // State for storing value of current news data Initially []
+  // This state will be use to store list of news article fetched from Gnews API so to store them in array
+  const [news, setNews] = useState([]);
+
+  // 2. Use effect for performing side effect (fetching data from api)
+  // [] -> dependency telling react to run once after Intial render of component
+  // In our case we need to fetch the data once when component Mounts
+  useEffect(() => {
+    // 3. Create a Asynchronous function to fetch the data from api
+    const fetchNews = async () => {
+      const gnewsURL =
+        "https://gnews.io/api/v4/top-headlines?category=general&apikey=e44e09001f7655277af07cd5512bf391";
+
+      // use thunderclient to test this url in VS code
+      // It takes http req and reponse in JSON format
+    };
+  }, []);
+
   return (
     <div className="news">
       <header className="news-header">

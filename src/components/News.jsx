@@ -1,6 +1,7 @@
 import Calender from "./Calender";
 import Weather from "./Weather";
 import "./News.css";
+import useImg from "../assets/images/user.jpeg";
 export default function News() {
   return (
     <div className="news">
@@ -20,10 +21,45 @@ export default function News() {
         <div className="navbar">
           <div className="user">
             {/* To use image in react we need to import it */}
-            <img src="" alt="" />
+            <img src={useImg} alt={useImg} />
             <p>Utkarsh's Blog</p>
           </div>
-          <div className="categories">Categories</div>
+          <div className="categories">
+            <h1 className="nav-heading"></h1>
+            <div className="nav-links">
+              <a href="" className="nav-link">
+                General
+              </a>
+              <a href="#" className="nav-link">
+                World
+              </a>
+              <a href="#" className="nav-link">
+                Business
+              </a>
+              <a href="#" className="nav-link">
+                Technology
+              </a>
+              <a href="#" className="nav-link">
+                {" "}
+                Entertainment
+              </a>
+              <a href="#" className="nav-link">
+                Sports
+              </a>
+              <a href="#" className="nav-link">
+                Science
+              </a>
+              <a href="#" className="nav-link">
+                Health
+              </a>
+              <a href="#" className="nav-link">
+                Nation
+              </a>
+              <a href="" className="nav-link">
+                Bookmarks <i className="fa-regular fa-bookmark"></i>
+              </a>
+            </div>
+          </div>
         </div>
         {/* News Component -> headline + news grid  */}
         <div className="news-section">

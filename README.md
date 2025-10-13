@@ -64,7 +64,8 @@ npm install axios
 
 ### Errors
 
-- Uncaught Error: Objects are not valid as a React child (found: object with keys {id, title, description, content, url, image, publishedAt, lang, source}). If you meant to render a collection of children, use an array instead.
+1. Uncaught Error: Objects are not valid as a React child (found: object with keys {id, title, description, content, url, image, publishedAt, lang, source}). If you meant to render a collection of children, use an array instead.
+
 - Conditional Rendering
 - While fetching data from api and display the headline
 - Fix :
@@ -84,4 +85,10 @@ npm install axios
     </div>
   );
 }
+```
+
+2. Even after on clicking category it was not updating so update the api url to handle dynamic selectedCategory
+
+```js
+const gnewsURL = `https://gnews.io/api/v4/top-headlines?category=${selectedCategory}&lang=en&apikey=e44e09001f7655277af07cd5512bf391`;
 ```

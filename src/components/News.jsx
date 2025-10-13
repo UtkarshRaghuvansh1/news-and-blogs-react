@@ -51,10 +51,11 @@ export default function News() {
       try {
         // use thunderclient to test this url in VS code
         // It takes http req and reponse in JSON format
-        let gnewsURL = `https://gnews.io/api/v4/top-headlines?category=${selectedCategory}&lang=en&apikey=e44e09001f7655277af07cd5512bf391`;
+        const API_KEY = "e44e09001f7655277af07cd5512bf391";
+        let gnewsURL = `https://gnews.io/api/v4/top-headlines?category=${selectedCategory}&lang=en&apikey=${API_KEY}`;
         //8.3 If there is search query then change the URL
         if (searchQuery) {
-          gnewsURL = `https://gnews.io/api/v4/search?q=${searchQuery}&lang=en&apikey=e44e09001f7655277af07cd5512bf391`;
+          gnewsURL = `https://gnews.io/api/v4/search?q=${searchQuery}&lang=en&apikey=${API_KEY}`;
         }
         // 4. Taking response from API
         // await keyword is used to pause the execution of async function until the promise returned by axios.get is resolved

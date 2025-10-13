@@ -161,3 +161,22 @@ const gnewsURL = `https://gnews.io/api/v4/top-headlines?category=${selectedCateg
         }}
       />
       ```
+
+4. Handling GNews API Limits and Errors
+
+- To ensure a smooth user experience even when the API fails or limits are reached, I added detailed error handling:
+
+  - 403 Error (Forbidden) →
+
+    - → Shown message: “⚠️ Daily API request limit reached or invalid API key. Please try again later.”
+
+  - 429 Error (Too Many Requests) →
+
+    - → Shown message: “🚫 Too many requests! Please wait a moment before trying again.”
+
+  - Network Failure →
+
+    - → Shown message: “⚠️ Network error. Please check your connection.”
+
+  - Empty Results →
+    - → Shown message: “No articles found for this search.”

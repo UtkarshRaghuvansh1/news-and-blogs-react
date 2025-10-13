@@ -42,6 +42,9 @@ export default function News() {
   // 8.2 create state to hold the serach query
   const [searchQuery, setSearchQuery] = useState("");
 
+  // 10.1 Creating state for hamdling error
+  const [errorMessage, setErrorMessage] = useState("");
+
   // 2. Use effect for performing side effect (fetching data from api)
   // [] -> dependency telling react to run once after Intial render of component
   // In our case we need to fetch the data once when component Mounts
@@ -69,8 +72,12 @@ export default function News() {
         if (fetchedNews.length === 0) {
           setHeadline(null);
           setNews([]);
+          // 10.2 Update state of error message
+          setErrorMessage("No articles found for this search.");
           return; // Stop further processing
         }
+        //10.3 Reset previous errors if successful
+        setErrorMessage("");
         // console.log(fetchedNews);
         // 6. If there is no image in article.image so replace with default no image
         fetchedNews.forEach((article) => {
@@ -85,11 +92,28 @@ export default function News() {
         // console.log("Fetched 6 articles:", slicedNews);
         setNews(slicedNews);
       } catch (error) {
-        if (axios.isCancel(error)) {
-          console.log("Request canceled:", error.message);
+        console.error("Error fetching news:", error);
+
+        if (error.response) {
+          // 🌐 API responded with a status code
+          if (error.response.status === 403) {
+            setErrorMessage(
+              "Oops! Looks like you’ve hit the daily search limit. Come back tomorrow for more news!"
+            );
+          } else if (error.response.status === 429) {
+            setErrorMessage(
+              " Too many requests! Please wait a moment before trying again."
+            );
+          } else {
+            setErrorMessage("Failed to fetch news. Please try again later.");
+          }
         } else {
-          console.error("Error fetching news:", error);
+          // 🕸️ Network or unknown error
+          setErrorMessage(" Network error. Please check your connection.");
         }
+
+        setHeadline(null);
+        setNews([]);
       }
     };
     fetchNews();
@@ -196,7 +220,7 @@ export default function News() {
             </div>
           ) : (
             // 9.2 Show message if no results found
-            <p className="no-results">No articles found for this search.</p>
+            <p className="no-results">{errorMessage}</p>
           )}
           {/* News Grid Section  */}
           {news.length > 0 ? (

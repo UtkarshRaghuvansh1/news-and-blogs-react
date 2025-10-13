@@ -62,7 +62,7 @@ npm install axios
 
 - Official website: https://gnews.io
 
-### Errors
+### Errors For News Components
 
 1. Uncaught Error: Objects are not valid as a React child (found: object with keys {id, title, description, content, url, image, publishedAt, lang, source}). If you meant to render a collection of children, use an array instead.
 
@@ -180,3 +180,5 @@ const gnewsURL = `https://gnews.io/api/v4/top-headlines?category=${selectedCateg
 
   - Empty Results →
     - → Shown message: “No articles found for this search.”
+
+### Errors For Weather Components

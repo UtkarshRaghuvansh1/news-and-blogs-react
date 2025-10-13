@@ -92,3 +92,72 @@ npm install axios
 ```js
 const gnewsURL = `https://gnews.io/api/v4/top-headlines?category=${selectedCategory}&lang=en&apikey=e44e09001f7655277af07cd5512bf391`;
 ```
+
+3. Handling Missing or Broken Images and Empty News Results
+
+- To make the news feed UI more robust, I implemented several checks and fallbacks for cases where the GNews API returns incomplete or invalid data.
+
+- Problem :
+
+  - The GNews API sometimes returns:
+    - Articles without images (image: null)
+    - Invalid/broken image URLs
+    - Empty results for a given category or search query
+
+- Solution :
+
+  - 1. Fallback Image Handling
+
+    - Used a local placeholder image noImg whenever an article had no valid image field.
+    - Added an onError handler to <img> tags to replace broken or invalid URLs dynamically:
+
+    ```js
+    onError={(e) => {
+      e.target.onerror = null;
+      e.target.src = noImg;
+    }}
+
+    ```
+
+    - This ensures that every article always displays a valid image, even if the original URL fails.
+
+  - 2.  Default Image Assignment in API Response
+
+        - After fetching data, each article’s image field is checked.
+        - If missing, replaced immediately with noImg before setting state:
+
+        ```js
+        const cleanedNews = fetchedNews.map((article) => ({
+          ...article,
+          image: article.image || noImg,
+        }));
+        ```
+
+  - 3. Graceful Handling for Empty Results
+
+    - If the API returns zero articles:
+      - Headline is set to null.
+      - News grid is cleared.
+      - A message "No articles found for this search." is displayed to the user.
+
+  - 4. Conditional rendering used for:
+
+    - Showing the headline only if it exists.
+    - Showing the news grid only when news.length > 0.
+    - Displaying a fallback message otherwise.
+
+  - 5.  Improved User Experience
+
+    - Prevents layout breaks or console errors caused by undefined values.
+    - Guarantees a consistent design, even with incomplete API responses.
+
+      ```js
+      <img
+        src={article.image || noImg}
+        alt={article.title || "No title"}
+        onError={(e) => {
+          e.target.onerror = null;
+          e.target.src = noImg;
+        }}
+      />
+      ```

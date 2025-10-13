@@ -1,5 +1,6 @@
 import Calender from "./Calender";
 import Weather from "./Weather";
+import NewsModal from "./NewsModal";
 import "./News.css";
 import useImg from "../assets/images/user.jpeg";
 // import techImg from "../assets/images/tech.jpg";
@@ -198,27 +199,30 @@ export default function News() {
           )}
           {/* News Grid Section  */}
           {news.length > 0 ? (
-            <div className="news-grid">
-              {news.map((article, index) => {
-                // Key prop -> To uniquely identify each element which helps in efficient rendering of list
-                return (
-                  <div key={index} className="news-grid-item">
-                    <img
-                      src={article.image || noImg}
-                      alt={article.title}
-                      onError={(e) => {
-                        e.target.onerror = null; // prevent infinite loop
-                        e.target.src = noImg; // set fallback image
-                      }}
-                    />
-                    <h3>
-                      {article.title}
-                      <i className="fa-regular fa-bookmark bookmark"></i>
-                    </h3>
-                  </div>
-                );
-              })}
-            </div>
+            <>
+              <div className="news-grid">
+                {news.map((article, index) => {
+                  // Key prop -> To uniquely identify each element which helps in efficient rendering of list
+                  return (
+                    <div key={index} className="news-grid-item">
+                      <img
+                        src={article.image || noImg}
+                        alt={article.title}
+                        onError={(e) => {
+                          e.target.onerror = null; // prevent infinite loop
+                          e.target.src = noImg; // set fallback image
+                        }}
+                      />
+                      <h3>
+                        {article.title}
+                        <i className="fa-regular fa-bookmark bookmark"></i>
+                      </h3>
+                    </div>
+                  );
+                })}
+              </div>
+              <NewsModal />
+            </>
           ) : (
             // 9.4 If no headline (and hence, no news at all)
             <p className="no-results"></p>

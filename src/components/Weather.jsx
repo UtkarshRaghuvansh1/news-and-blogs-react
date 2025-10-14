@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import "./Weather.css";
-
+const API_KEY = "0857bdfbf9822bcb5f4d0f481d5e160a";
 export default function Weather() {
   // 1. using open weather map api
   // 1.1 Purpose to this state to store the weather data fetched from Open Weather Map API
@@ -11,10 +11,29 @@ export default function Weather() {
   const [location, setLocation] = useState("");
 
   // 3 Dynamically display weather data fetched from open weather api
+
+  // 5. Default location that will render when application loads
+  // for this I will use use effect hook
+  // dependecies will be empty -> run the side effects only once when page loads
+  useEffect(() => {
+    const fetchDefaultLocation = async () => {
+      // 5.1 set default location
+      const defautLocation = "Bengaluru";
+      // 5.2 Modify Url
+      const URL = `https://api.openweathermap.org/data/2.5/weather?q=${defautLocation}&units=Metric&appid=${API_KEY}`;
+
+      // 5.3 http request to fecth the information
+      const defaultResponse = await axios.get(URL);
+      // 5.4 Update state of data for location
+      setData(defaultResponse.data);
+    };
+    // 5.5 Call the function
+    fetchDefaultLocation();
+  }, []);
+
   // 1.2 Serach function -> resposible of fetching weather data from API
   const search = async () => {
     try {
-      const API_KEY = "0857bdfbf9822bcb5f4d0f481d5e160a";
       const URL = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=Metric&appid=${API_KEY}`;
 
       // 1.3 http get request using axios

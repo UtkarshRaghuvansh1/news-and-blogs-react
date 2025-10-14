@@ -63,9 +63,27 @@
 .weather-data i {
   font-size: 5rem;
 }
+
 .weather-data i.bxs-sun {
   color: #ffc87c;
 }
+
+.weather-data i.bxs-cloud {
+  color: #fff;
+}
+
+.weather-data i.bxs-rain {
+  color: #5fd1f9;
+}
+
+.weather-data i.bxs-cloud-lightning {
+  color: #154abd;
+}
+
+.weather-data i.bxs-cloud-snow {
+  color: #ffc87c;
+}
+
 .weather-type,
 .temp {
   font-family: "Comfortaa", sans-serif;

@@ -42,6 +42,28 @@ export default function Weather() {
     setLocation(evt.target.value);
   };
 
+  //4. Function which will handle which icon to be displayed
+  const getWeatherIcon = (weatherType) => {
+    console.log("Weather Type", weatherType);
+    switch (weatherType) {
+      case "Clear":
+        return <i className="bx bxs-sun"></i>;
+      case "Clouds":
+        return <i className="bx bxs-cloud"></i>;
+      case "Snow":
+        return <i className="bx bxs-cloud-snow"></i>;
+      case "Rain":
+        return <i className="bx bxs-cloud-rain"></i>;
+      case "Thunderstorm":
+        return <i className="bx bxs-cloud-thunderstorm"></i>;
+      case "Haze":
+        return <i className="bx bxs-cloud"></i>;
+      case "Mist":
+        return <i className="bx bxs-cloud"></i>;
+      default:
+        return <i className="bx bxs-sun"></i>;
+    }
+  };
   return (
     <div className="weather">
       <div className="search">
@@ -63,7 +85,10 @@ export default function Weather() {
         </div>
         <div className="weather-data">
           {/* Use library to show icon - box icon */}
-          <i className="bx  bxs-sun"></i>
+          {/* 4.2 dynamically call the function to display the icon  */}
+          {data.weather &&
+            data.weather[0] &&
+            getWeatherIcon(data.weather[0].main)}
           {/* 3.2 Dynamically update the type section 
           Added conditional rendering if data.weather exist then show else null 
           if data not available the display null*/}

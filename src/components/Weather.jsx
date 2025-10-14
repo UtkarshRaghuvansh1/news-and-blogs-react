@@ -11,6 +11,7 @@ export default function Weather() {
   const [location, setLocation] = useState("");
 
   // 3 Dynamically display weather data fetched from open weather api
+  // 6 when no data found then display the messages
 
   // 5. Default location that will render when application loads
   // for this I will use use effect hook
@@ -38,18 +39,26 @@ export default function Weather() {
 
       // 1.3 http get request using axios
       const response = await axios.get(URL);
-      console.log("response", response);
-
-      // 1.4 update the data/state after fetching the response
-      setData(response.data);
-      // 2.4 set user location to '' once user already serched the location
-      // this will help user to enter new location
-      // Enchance UI by providing immediate Visual feedback and search was succesfull
-
-      setLocation("");
-      console.log("data", data);
+      // console.log("response", response);
+      // 6.2 When API response is not success
+      if (response.data.cod !== 200) {
+        setData({ notFound: true });
+      } else {
+        // 1.4 update the data/state after fetching the response
+        setData(response.data);
+        // 2.4 set user location to '' once user already serched the location
+        // this will help user to enter new location
+        // Enchance UI by providing immediate Visual feedback and search was succesfull
+        setLocation("");
+        console.log("data", data);
+      }
     } catch (error) {
-      console.error("Error fetching weather data:", error);
+      // 6.3 Set data based on error
+      if (error.response && error.response.status === 404) {
+        setData({ notFound: true });
+      } else {
+        console.error("Error fetching weather data:", error);
+      }
     }
   };
 
@@ -102,23 +111,29 @@ export default function Weather() {
           />
           <i className="fa-solid fa-magnifying-glass" onClick={search}></i>
         </div>
-        <div className="weather-data">
-          {/* Use library to show icon - box icon */}
-          {/* 4.2 dynamically call the function to display the icon  */}
-          {data.weather &&
-            data.weather[0] &&
-            getWeatherIcon(data.weather[0].main)}
-          {/* 3.2 Dynamically update the type section 
+        {/* Weather Data  */}
+
+        {data.notFound ? (
+          <div className="not-found">Not Found ☹️</div>
+        ) : (
+          <div className="weather-data">
+            {/* Use library to show icon - box icon */}
+            {/* 4.2 dynamically call the function to display the icon  */}
+            {data.weather &&
+              data.weather[0] &&
+              getWeatherIcon(data.weather[0].main)}
+            {/* 3.2 Dynamically update the type section 
           Added conditional rendering if data.weather exist then show else null 
           if data not available the display null*/}
-          <div className="weather-type">
-            {data.weather ? data.weather[0].main : null}
+            <div className="weather-type">
+              {data.weather ? data.weather[0].main : null}
+            </div>
+            {/*3.3 Dynamically update the temprature data if it is present   */}
+            <div className="temp">
+              {data.main ? `${Math.floor(data.main.temp)} °C` : null}
+            </div>
           </div>
-          {/*3.3 Dynamically update the temprature data if it is present   */}
-          <div className="temp">
-            {data.main ? `${Math.floor(data.main.temp)} °C` : null}
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );

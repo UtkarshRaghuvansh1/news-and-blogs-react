@@ -9,6 +9,8 @@ export default function Weather() {
   // 2 Creating state to manage dynamic location
   // User type the location, will be stored in location
   const [location, setLocation] = useState("");
+
+  // 3 Dynamically display weather data fetched from open weather api
   // 1.2 Serach function -> resposible of fetching weather data from API
   const search = async () => {
     try {
@@ -35,6 +37,7 @@ export default function Weather() {
   // 2.2 function to update the location whatever user types
   // This function will be called every time user types in the input field
   const handleInputChange = (evt) => {
+    console.log("Click works");
     evt.preventDefault();
     setLocation(evt.target.value);
   };
@@ -44,7 +47,8 @@ export default function Weather() {
       <div className="search">
         <div className="search-top">
           <i className="fa-solid fa-location-dot"></i>
-          <div className="location">Banglore </div>
+          {/* 3.1 dynamically updating city based on data fetched  */}
+          <div className="location">{data.name} </div>
         </div>
         <div className="search-location">
           <input
@@ -55,13 +59,21 @@ export default function Weather() {
             // Input field value will be controlled by react state
             onChange={handleInputChange}
           />
-          <i className="fa-solid fa-magnifying-glass"></i>
+          <i className="fa-solid fa-magnifying-glass" onClick={search}></i>
         </div>
         <div className="weather-data">
           {/* Use library to show icon - box icon */}
           <i className="bx  bxs-sun"></i>
-          <div className="weather-type">Clear</div>
-          <div className="temp">28</div>
+          {/* 3.2 Dynamically update the type section 
+          Added conditional rendering if data.weather exist then show else null 
+          if data not available the display null*/}
+          <div className="weather-type">
+            {data.weather ? data.weather[0].main : null}
+          </div>
+          {/*3.3 Dynamically update the temprature data if it is present   */}
+          <div className="temp">
+            {data.main ? `${Math.floor(data.main.temp)} °C` : null}
+          </div>
         </div>
       </div>
     </div>

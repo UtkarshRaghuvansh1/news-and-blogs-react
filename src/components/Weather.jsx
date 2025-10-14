@@ -12,6 +12,7 @@ export default function Weather() {
 
   // 3 Dynamically display weather data fetched from open weather api
   // 6 when no data found then display the messages
+  //7 Search location on pressing enter key
 
   // 5. Default location that will render when application loads
   // for this I will use use effect hook
@@ -92,6 +93,13 @@ export default function Weather() {
         return <i className="bx bxs-sun"></i>;
     }
   };
+  // 7.1 Function to handle when user press enter
+  const handleKeyDown = (evt) => {
+    // evt.key -> value that key contain
+    if (evt.key === "Enter") {
+      search();
+    }
+  };
   return (
     <div className="weather">
       <div className="search">
@@ -108,6 +116,8 @@ export default function Weather() {
             value={location}
             // Input field value will be controlled by react state
             onChange={handleInputChange}
+            // 7.2 On pressing enter user search the weather
+            onKeyDown={handleKeyDown}
           />
           <i className="fa-solid fa-magnifying-glass" onClick={search}></i>
         </div>

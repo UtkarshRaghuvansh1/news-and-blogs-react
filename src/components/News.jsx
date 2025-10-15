@@ -247,6 +247,7 @@ export default function News() {
                   );
                 })}
               </div>
+              {/* 11. Modal Box Component creation  */}
               <NewsModal />
             </>
           ) : (

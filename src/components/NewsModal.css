@@ -1,0 +1,89 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  /* content in center  */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* increase z-index  */
+  z-index: 1000;
+}
+
+/* Styling modal contents */
+.modal-content {
+  width: 90%;
+  max-width: 60rem;
+  height: auto;
+  max-height: 100%;
+  background-color: #111214;
+  /* space inside modalbox  */
+  padding: 4rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 5rem rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+
+/* Styling cross icon */
+.close-button {
+  position: absolute;
+  top: 1rem;
+  right: 2rem;
+  cursor: pointer;
+  color: #fff;
+}
+
+/* Styling Image  */
+.modal-image {
+  width: 100%;
+  height: auto;
+  max-height: 30rem;
+  object-fit: cover;
+  opacity: 0.5;
+  border-radius: 1rem;
+}
+
+/* Styling modal heading/ttile */
+.modal-title {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 2rem;
+  letter-spacing: 0.1rem;
+  margin-top: 2rem;
+  color: #fff;
+}
+
+/* Styling paragraph element */
+.modal-source,
+.modal-date {
+  font-family: "Comfortaa", sans-serif;
+  color: #bbb;
+  font-size: 1.5rem;
+  margin-top: 1rem;
+}
+
+/* styling modal content text  */
+.modal-content-text {
+  font-size: 1.5rem;
+  margin-top: 2rem;
+  color: #ddd;
+  line-height: 2.7rem;
+}
+
+/* Styling read more link  */
+.read-more-link {
+  width: 15rem;
+  display: inline-block;
+  background: linear-gradient(to right, #b88efc, #6877f4);
+  margin-top: 2rem;
+  padding: 1rem 2rem;
+  color: #fff;
+  border-radius: 5rem;
+  font-size: 1.6rem;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+}
+/* Clicking effect  */
+.read-more-link:active {
+  transform: translateY(0.1rem);
+}

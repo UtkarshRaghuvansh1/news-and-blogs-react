@@ -1,5 +1,6 @@
 import Calender from "./Calender";
 import Weather from "./Weather";
+import WeatherCleanCode from "./WeatherCleanCode";
 import NewsModal from "./NewsModal";
 import "./News.css";
 import useImg from "../assets/images/user.jpeg";
@@ -259,6 +260,7 @@ export default function News() {
         {/* Weather and Calender Component  */}
         <div className="weather-calender">
           <Weather />
+          {/* <WeatherCleanCode /> */}
           <Calender />
         </div>
       </div>

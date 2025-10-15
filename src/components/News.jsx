@@ -13,6 +13,7 @@ import useImg from "../assets/images/user.jpeg";
 import noImg from "../assets/images/no-img.png";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import Bookmarks from "./Bookmarks";
 
 // 7. Fetching news by categories
 const categories = [
@@ -45,6 +46,12 @@ export default function News() {
 
   // 10.1 Creating state for hamdling error
   const [errorMessage, setErrorMessage] = useState("");
+
+  // 11. For Modal Box adding state variables
+  // 11.1 Boolean var which will control whether modal is visible or not
+  const [showModal, setShowModal] = useState(false);
+  // 11.2 It store the detail of the article which user clicked on
+  const [selectedArticle, setSelectedArticle] = useState(null);
 
   // 2. Use effect for performing side effect (fetching data from api)
   // [] -> dependency telling react to run once after Intial render of component
@@ -146,6 +153,14 @@ export default function News() {
     // Once user serahced using seacrh query, empty the input box
     setSearchInput("");
   };
+
+  // 11.3 This function is called when user clicks on the article
+  // This function will set the selected article and setShowModal to true
+  const handleArticle = (article) => {
+    setSelectedArticle(article);
+    setShowModal(true);
+  };
+
   return (
     <div className="news">
       <header className="news-header">
@@ -205,7 +220,12 @@ export default function News() {
         <div className="news-section">
           {headline ? (
             // Headline Section
-            <div className="headline">
+            // 11.5 Modal Box
+            // The arrow function here is used to define what should happen when the div is clicked.
+            // Instead of passing the handle article, click function directly which would execute immediately.
+            // We will wrap it in an arrow function to delay its execution until the click event occurs.
+            // Inside the arrow function, we call handle article click and we pass headline as the argument.
+            <div className="headline" onClick={() => handleArticle(headline)}>
               <img
                 src={headline.image || noImg}
                 alt={headline.title}
@@ -230,7 +250,12 @@ export default function News() {
                 {news.map((article, index) => {
                   // Key prop -> To uniquely identify each element which helps in efficient rendering of list
                   return (
-                    <div key={index} className="news-grid-item">
+                    <div
+                      key={index}
+                      className="news-grid-item"
+                      onClick={() => handleArticle(article)} // 11.6 handleArticle ->  when use click on news grid modal box open
+                    >
+                      {" "}
                       <img
                         src={article.image || noImg}
                         alt={article.title}
@@ -247,8 +272,18 @@ export default function News() {
                   );
                 })}
               </div>
-              {/* 11. Modal Box Component creation  */}
-              <NewsModal />
+              {/*Modal Box Component creation  */}
+              {/* // 11.4 Now we need to0 pass some Props to NewsModal component
+              from News component */}
+              {/* showModal prop -> control visibility of modal  */}
+              {/* article prop -> contains the detail of the article that we want to display in Modal  */}
+              {/* onClose prop -> Handle the action of closing the modal when user wants to close */}
+              <NewsModal
+                show={showModal}
+                article={selectedArticle}
+                onClose={() => setShowModal(false)}
+              />
+              {/* <Bookmarks onClose={() => setShowModal(false)} /> */}
             </>
           ) : (
             // 9.4 If no headline (and hence, no news at all)

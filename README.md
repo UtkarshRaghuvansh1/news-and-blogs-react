@@ -182,3 +182,242 @@ const gnewsURL = `https://gnews.io/api/v4/top-headlines?category=${selectedCateg
     - → Shown message: “No articles found for this search.”
 
 ### Errors For Weather Components
+
+## Blog Section
+
+### Functionality
+
+1. CRUD
+
+- Create Blog - Form Component
+- Read Blog -> Modal Box
+- Update Blog -> Edit button
+- Delete Blog -> Delete button
+
+2. HTML for BLOG creation
+
+```jsx
+import userImg from "../assets/images/user.jpeg";
+export default function Blogs() {
+  return (
+    <div className="blogs">
+      <div className="blog-left">
+        <img src={userImg} alt="User Image" />
+      </div>
+      <div className="blog-right">
+        <button className="post-btn">Create New Post</button>
+        <button className="blog-close-btn">
+          Back
+          <i className="bx bx-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  );
+}
+```
+
+3. Adding form to blog component
+
+```jsx
+import userImg from "../assets/images/user.jpeg";
+import "./Blogs.css";
+export default function Blogs() {
+  return (
+    <div className="blogs">
+      <div className="blog-left">
+        <img src={userImg} alt="User Image" />
+      </div>
+      <div className="blog-right">
+        {/* <button className="post-btn">Create New Post</button> */}
+
+        {/* Form Element  */}
+        <div className="blog-right-form">
+          <h1>New Post</h1>
+          <form>
+            <div className="img-upload">
+              <label htmlFor="file-upload" className=".file-upload">
+                <i className="bx bx-upload"></i>Upload Image
+              </label>
+              {/* id attribute should match the html for attribute */}
+              <input type="file" id="file-upload" />
+            </div>
+            <input
+              type="text"
+              placeholder="Add Title (Max 60 character)"
+              className="title-input"
+            />
+
+            <textarea className="text-input" placeholder="Add Text"></textarea>
+            <button type="submit" className="submit-btn"></button>
+          </form>
+        </div>
+
+        <button className="blog-close-btn">
+          Back
+          <i className="bx bx-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  );
+}
+```
+
+4. Styling Blog Component
+
+```css
+.blogs {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+.blog-left {
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+      rgba(184, 142, 252, 0.3),
+      rgba(104, 119, 244, 0.2)
+    ), url("../assets/images/bg.jpg");
+  background-size: cover;
+
+  border-radius: 1rem 0 0 1rem;
+  position: relative;
+}
+.blog-left img {
+  width: 15rem;
+  aspect-ratio: 1;
+  object-fit: conver;
+  border-radius: 50%;
+  border: 0.3rem solid #6877f4;
+  position: absolute;
+  top: 50%;
+  right: -7.5%;
+  transform: translateY(-50%);
+}
+
+.blog-right {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: relative;
+}
+.blog-close-btn {
+  position: absolute;
+  top: 3rem;
+  right: 2.5rem;
+  background: transparent;
+  border: none;
+  font-family: "Bebus Neue", sans-serif;
+  font-size: 3rem;
+  color: #ddd;
+  /* Aligment of icon  */
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.blog-close-btn i {
+  font-size: 3.5rem;
+}
+.post-btn {
+  width: clamp(15rem, 16cqi, 30rem);
+  aspect-ratio: 4/1;
+  background: linear-gradient(to right, #b88efc, #6877f4);
+  border: none;
+  border-radius: 5rem;
+  font-size: 2.5rem;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+.post-btn:active {
+  transform: translateY(0.2rem);
+}
+
+/* Styling form in blog  */
+.blog-right-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 5rem;
+}
+
+.blog-right-form h1 {
+  font-family: "Comfortaa", sans-serif;
+  font-size: clamp(2rem, 5cqi, 6rem);
+  text-transform: uppercase;
+  background: linear-gradient(to right, #b88efc, #6877f4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.blog-right-form form {
+  display: flex;
+  flex-direction: column;
+  row-gap: 4rem;
+}
+.file-upload {
+  display: flex;
+  align-items: center;
+  column-gap: 2rem;
+  font-size: 2rem;
+  color: #bbb;
+  cursor: pointer;
+}
+.file-upload i {
+  font-size: 4rem;
+  color: #b88efc;
+}
+.blog-right-form input[type="file"] {
+  display: none;
+}
+
+.title-input,
+.text-input {
+  width: clamp(15rem, 25cqi, 45rem);
+  background: transparent;
+  border: none;
+  border-bottom: 0.1rem solid #b88efc;
+  padding: 2rem 0;
+  color: #ddd;
+}
+.title-input {
+  font-size: 1.8rem;
+}
+.text-input {
+  aspect-ratio: 5/3;
+  resize: none;
+}
+.title-input::placeholder,
+.text-input::placeholder {
+  font-family: "Comfortaa", sans-serif;
+  font-size: 1.3rem;
+  color: #b88efc;
+  opacity: 0.5;
+}
+.title-input::placeholder {
+  font-size: 1.6rem;
+}
+.title-input:focus::placeholder,
+.text-input:focus::placeholder {
+  color: transparent;
+}
+
+.submit-btn {
+  height: 5rem;
+  background: linear-gradient(to left, #b88efc, #6877f4);
+  border: none;
+  border-radius: 5rem;
+  font-size: 1.8rem;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+  text-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+.submit-btn:active {
+  transform: translateY(0.2rem);
+}
+```

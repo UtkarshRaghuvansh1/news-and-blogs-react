@@ -29,45 +29,38 @@ export default function useFetch(url) {
 
     setLoading(true); // reset loading before each request
     setError(null); // reset error before each request
+
     const fetchData = async () => {
       try {
         console.log("Fetching New Data...");
         // 5️⃣ Fetch data using native fetch API
         const response = await fetch(url);
-        // 6️⃣ Handle HTTP errors manually
+        // Handle HTTP errors
         if (!response.ok) {
-          if (response.status === 404) {
-            setData({ notFound: true });
+          if (response.status === 403) {
+            throw new Error(
+              "Oops! You’ve reached the daily limit for fetching news. Please try again tomorrow."
+            );
+          } else if (response.status === 429) {
+            throw new Error(
+              "Too many requests! Please wait a few moments before trying again."
+            );
+          } else if (response.status === 404) {
+            throw new Error(
+              "Sorry, we couldn’t find the news you’re looking for."
+            );
           } else {
             throw new Error(`HTTP Error: ${response.status}`);
           }
-        } else {
-          // 7️⃣ Convert JSON response into JS object
-          const res = await response.json();
-          // Push the new data in the cache object
-          apiCache[url] = res;
-          setData(res);
         }
+        // 7️⃣ Convert JSON response into JS object
+        const res = await response.json();
+        // Push the new data in the cache object
+        apiCache[url] = res;
+        setData(res);
       } catch (error) {
         console.error("Error fetching news:", error);
-
-        if (error.response) {
-          // 🌐 API responded with a status code
-          if (error.response.status === 403) {
-            setError(
-              "Oops! Looks like you’ve hit the daily search limit. Come back tomorrow for more news!"
-            );
-          } else if (error.response.status === 429) {
-            setError(
-              " Too many requests! Please wait a moment before trying again."
-            );
-          } else {
-            setError("Failed to fetch news. Please try again later.");
-          }
-        } else {
-          // 🕸️ Network or unknown error
-          setError(" Network error. Please check your connection.");
-        }
+        setError(error.message); // Display actual HTTP error
       } finally {
         // 8️⃣ Stop loading after response/error
         setLoading(false);

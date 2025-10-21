@@ -11,7 +11,7 @@ import useImg from "../assets/images/user.jpeg";
 // import healthImg from "../assets/images/health.jpg";
 // import nationImg from "../assets/images/nation.jpg";
 import noImg from "../assets/images/no-img.png";
-import axios from "axios";
+// import axios from "axios";
 import { useEffect, useState } from "react";
 import useFetch from "./useFetch";
 // import Bookmarks from "./Bookmarks";
@@ -46,7 +46,7 @@ export default function News() {
   const [searchQuery, setSearchQuery] = useState("");
 
   // 10.1 Creating state for hamdling error
-  const [errorMessage, setErrorMessage] = useState("");
+  // const [errorMessage, setErrorMessage] = useState("");
 
   // 11. For Modal Box adding state variables
   // 11.1 Boolean var which will control whether modal is visible or not
@@ -273,9 +273,7 @@ export default function News() {
             <p className="no-results">{error}</p>
           )}
           {/* News Grid Section  */}
-          {loading ? (
-            <p>Loading news...</p>
-          ) : news.length > 0 ? (
+          {news.length > 0 ? (
             <>
               <div className="news-grid">
                 {news.map((article, index) => {

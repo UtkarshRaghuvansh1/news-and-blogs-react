@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 
+// Cache the data so that when user select previusly visited category data is persisted instead fetching new data
+const apiCache = {};
 /**
  * Custom hook to fetch data from a given API URL
  * Handles loading, success, and error states
@@ -12,20 +14,26 @@ export default function useFetch(url) {
   const [loading, setLoading] = useState(true);
   // 3️⃣ Manage error state
   const [error, setError] = useState(null);
-  console.log("useFecth1 working..1");
   // useEffect()-> It runs automatically when url changes — so each time a new city is searched, it triggers an API call.
   useEffect(() => {
     // 4️⃣ Skip API call if no URL is passed
     if (!url) return;
+
+    // If data is present in the cache Use that data to set the data
+    if (apiCache[url]) {
+      console.log("Using Cached Data", apiCache[url]);
+      setData(apiCache[url]);
+      setLoading(false);
+      return;
+    }
+
     setLoading(true); // reset loading before each request
     setError(null); // reset error before each request
-    console.log("useFecth1 working..2");
     const fetchData = async () => {
       try {
+        console.log("Fetching New Data...");
         // 5️⃣ Fetch data using native fetch API
-        console.log("useFecth1 working..3");
         const response = await fetch(url);
-        console.log("useFecth -->", response);
         // 6️⃣ Handle HTTP errors manually
         if (!response.ok) {
           if (response.status === 404) {
@@ -36,11 +44,30 @@ export default function useFetch(url) {
         } else {
           // 7️⃣ Convert JSON response into JS object
           const res = await response.json();
-          // Here data is straight forword
+          // Push the new data in the cache object
+          apiCache[url] = res;
           setData(res);
         }
       } catch (error) {
-        setError(error);
+        console.error("Error fetching news:", error);
+
+        if (error.response) {
+          // 🌐 API responded with a status code
+          if (error.response.status === 403) {
+            setError(
+              "Oops! Looks like you’ve hit the daily search limit. Come back tomorrow for more news!"
+            );
+          } else if (error.response.status === 429) {
+            setError(
+              " Too many requests! Please wait a moment before trying again."
+            );
+          } else {
+            setError("Failed to fetch news. Please try again later.");
+          }
+        } else {
+          // 🕸️ Network or unknown error
+          setError(" Network error. Please check your connection.");
+        }
       } finally {
         // 8️⃣ Stop loading after response/error
         setLoading(false);

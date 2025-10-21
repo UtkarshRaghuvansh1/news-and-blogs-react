@@ -13,7 +13,8 @@ import useImg from "../assets/images/user.jpeg";
 import noImg from "../assets/images/no-img.png";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import Bookmarks from "./Bookmarks";
+import useFetch from "./useFetch";
+// import Bookmarks from "./Bookmarks";
 
 // 7. Fetching news by categories
 const categories = [
@@ -53,81 +54,107 @@ export default function News() {
   // 11.2 It store the detail of the article which user clicked on
   const [selectedArticle, setSelectedArticle] = useState(null);
 
+  // ******************************* Old Code **************************************
   // 2. Use effect for performing side effect (fetching data from api)
   // [] -> dependency telling react to run once after Intial render of component
   // In our case we need to fetch the data once when component Mounts
+  // ####################################
+  // useEffect(() => {
+  //   // 3. Create a Asynchronous function to fetch the data from api
+  //   const fetchNews = async () => {
+  //     try {
+  //       // use thunderclient to test this url in VS code
+  //       // It takes http req and reponse in JSON format
+  //       const API_KEY = "e44e09001f7655277af07cd5512bf391";
+  //       let gnewsURL = `https://gnews.io/api/v4/top-headlines?category=${selectedCategory}&lang=en&apikey=${API_KEY}`;
+  //       //8.3 If there is search query then change the URL
+  //       if (searchQuery) {
+  //         gnewsURL = `https://gnews.io/api/v4/search?q=${searchQuery}&lang=en&apikey=${API_KEY}`;
+  //       }
+  //       // 4. Taking response from API
+  //       // await keyword is used to pause the execution of async function until the promise returned by axios.get is resolved
+  //       //axios.get() -> Get request to url to get data from API
+  //       const response = await axios.get(gnewsURL);
+  //       // console.log(response);
+  //       const fetchedNews = response.data.articles;
+
+  //       //9. if API is returning empty data handle empty search
+  //       // 🧠 If no results, show a message instead of blank UI
+  //       if (fetchedNews.length === 0) {
+  //         setHeadline(null);
+  //         setNews([]);
+  //         // 10.2 Update state of error message
+  //         setErrorMessage("No articles found for this search.");
+  //         return; // Stop further processing
+  //       }
+  //       //10.3 Reset previous errors if successful
+  //       setErrorMessage("");
+  //       // console.log(fetchedNews);
+  //       // 6. If there is no image in article.image so replace with default no image
+  //       fetchedNews.forEach((article) => {
+  //         if (!article.image) {
+  //           article.image = noImg;
+  //         }
+  //       });
+
+  //       // 5. Update the headline news
+  //       setHeadline(fetchedNews[0]);
+  //       const slicedNews = fetchedNews.slice(1, 7);
+  //       // console.log("Fetched 6 articles:", slicedNews);
+  //       setNews(slicedNews);
+  //     } catch (error) {
+  //       console.error("Error fetching news:", error);
+
+  //       if (error.response) {
+  //         // 🌐 API responded with a status code
+  //         if (error.response.status === 403) {
+  //           setErrorMessage(
+  //             "Oops! Looks like you’ve hit the daily search limit. Come back tomorrow for more news!"
+  //           );
+  //         } else if (error.response.status === 429) {
+  //           setErrorMessage(
+  //             " Too many requests! Please wait a moment before trying again."
+  //           );
+  //         } else {
+  //           setErrorMessage("Failed to fetch news. Please try again later.");
+  //         }
+  //       } else {
+  //         // 🕸️ Network or unknown error
+  //         setErrorMessage(" Network error. Please check your connection.");
+  //       }
+
+  //       setHeadline(null);
+  //       setNews([]);
+  //     }
+  //   };
+  //   fetchNews();
+  //   //7.3 as soon as selected category, fetch news func will be called. React will re-render
+  //   //8.4 Serachquery will be also in dependencies array
+  // }, [selectedCategory, searchQuery]);
+
+  // ********************************************************************
+
+  // ******************** Custom hook to fetch the data *********************
+  const API_KEY = "e44e09001f7655277af07cd5512bf391";
+  let gnewsURL = `https://gnews.io/api/v4/top-headlines?category=${selectedCategory}&lang=en&apikey=${API_KEY}`;
+  //8.3 If there is search query then change the URL
+  if (searchQuery) {
+    gnewsURL = `https://gnews.io/api/v4/search?q=${searchQuery}&lang=en&apikey=${API_KEY}`;
+  }
+  const { data, loading, error } = useFetch(gnewsURL);
+
   useEffect(() => {
-    // 3. Create a Asynchronous function to fetch the data from api
-    const fetchNews = async () => {
-      try {
-        // use thunderclient to test this url in VS code
-        // It takes http req and reponse in JSON format
-        const API_KEY = "e44e09001f7655277af07cd5512bf391";
-        let gnewsURL = `https://gnews.io/api/v4/top-headlines?category=${selectedCategory}&lang=en&apikey=${API_KEY}`;
-        //8.3 If there is search query then change the URL
-        if (searchQuery) {
-          gnewsURL = `https://gnews.io/api/v4/search?q=${searchQuery}&lang=en&apikey=${API_KEY}`;
-        }
-        // 4. Taking response from API
-        // await keyword is used to pause the execution of async function until the promise returned by axios.get is resolved
-        //axios.get() -> Get request to url to get data from API
-        const response = await axios.get(gnewsURL);
-        // console.log(response);
-        const fetchedNews = response.data.articles;
+    if (data && data.articles) {
+      setHeadline(data.articles[0]); // First article as headline
+      setNews(data.articles.slice(1, 7)); // Next 6 articles as news list
+    } else {
+      // No results found
+      setHeadline(null);
+      setNews([]);
+    }
+  }, [data, selectedCategory, searchQuery]);
+  // ******************************************************
 
-        //9. if API is returning empty data handle empty search
-        // 🧠 If no results, show a message instead of blank UI
-        if (fetchedNews.length === 0) {
-          setHeadline(null);
-          setNews([]);
-          // 10.2 Update state of error message
-          setErrorMessage("No articles found for this search.");
-          return; // Stop further processing
-        }
-        //10.3 Reset previous errors if successful
-        setErrorMessage("");
-        // console.log(fetchedNews);
-        // 6. If there is no image in article.image so replace with default no image
-        fetchedNews.forEach((article) => {
-          if (!article.image) {
-            article.image = noImg;
-          }
-        });
-
-        // 5. Update the headline news
-        setHeadline(fetchedNews[0]);
-        const slicedNews = fetchedNews.slice(1, 7);
-        // console.log("Fetched 6 articles:", slicedNews);
-        setNews(slicedNews);
-      } catch (error) {
-        console.error("Error fetching news:", error);
-
-        if (error.response) {
-          // 🌐 API responded with a status code
-          if (error.response.status === 403) {
-            setErrorMessage(
-              "Oops! Looks like you’ve hit the daily search limit. Come back tomorrow for more news!"
-            );
-          } else if (error.response.status === 429) {
-            setErrorMessage(
-              " Too many requests! Please wait a moment before trying again."
-            );
-          } else {
-            setErrorMessage("Failed to fetch news. Please try again later.");
-          }
-        } else {
-          // 🕸️ Network or unknown error
-          setErrorMessage(" Network error. Please check your connection.");
-        }
-
-        setHeadline(null);
-        setNews([]);
-      }
-    };
-    fetchNews();
-    //7.3 as soon as selected category, fetch news func will be called. React will re-render
-    //8.4 Serachquery will be also in dependencies array
-  }, [selectedCategory, searchQuery]);
   // 7.4 Function to update the category
   // evt -> event object which is automatically passed when even occures
   // category -> Category on which user cliked on
@@ -218,7 +245,9 @@ export default function News() {
         </div>
         {/* News Component -> headline + news grid  */}
         <div className="news-section">
-          {headline ? (
+          {loading ? (
+            <p>Loading Headline news...</p>
+          ) : headline ? (
             // Headline Section
             // 11.5 Modal Box
             // The arrow function here is used to define what should happen when the div is clicked.
@@ -241,10 +270,12 @@ export default function News() {
             </div>
           ) : (
             // 9.2 Show message if no results found
-            <p className="no-results">{errorMessage}</p>
+            <p className="no-results">{error}</p>
           )}
           {/* News Grid Section  */}
-          {news.length > 0 ? (
+          {loading ? (
+            <p>Loading news...</p>
+          ) : news.length > 0 ? (
             <>
               <div className="news-grid">
                 {news.map((article, index) => {

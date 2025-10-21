@@ -51,7 +51,7 @@ export default function Weather() {
         // this will help user to enter new location
         // Enchance UI by providing immediate Visual feedback and search was succesfull
         setLocation("");
-        console.log("data", data);
+        // console.log("data", data);
       }
     } catch (error) {
       // 6.3 Set data based on error
@@ -66,14 +66,14 @@ export default function Weather() {
   // 2.2 function to update the location whatever user types
   // This function will be called every time user types in the input field
   const handleInputChange = (evt) => {
-    console.log("Click works");
+    // console.log("Click works");
     evt.preventDefault();
     setLocation(evt.target.value);
   };
 
   //4. Function which will handle which icon to be displayed
   const getWeatherIcon = (weatherType) => {
-    console.log("Weather Type", weatherType);
+    // console.log("Weather Type", weatherType);
     switch (weatherType) {
       case "Clear":
         return <i className="bx bxs-sun"></i>;

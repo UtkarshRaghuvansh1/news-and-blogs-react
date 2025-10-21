@@ -421,3 +421,112 @@ export default function Blogs() {
   transform: translateY(0.2rem);
 }
 ```
+
+5. Handle Navigation between News and Blog component
+
+- create states and function to show visiblity of news and blog component in App.jsx file
+
+```jsx
+const [showNews, setShowNews] = useState(true);
+const [showBlogs, setShowBlogs] = useState(false);
+
+// Function to handle show blogs component
+const handleShowBlogs = () => {
+  setShowNews(false);
+  setShowBlogs(true);
+};
+// Function to handle show news component
+const handleBackToNews = () => {
+  setShowBlogs(false);
+  setShowNews(true);
+};
+return (
+  <div className="container">
+    <div className="news-and-blog">
+      {showNews && <News onShowBlogs={handleShowBlogs} />}
+      {showBlogs && <Blogs onBack={handleBackToNews} />}
+    </div>
+  </div>
+);
+```
+
+- In News.jsx take this prop
+
+```jsx
+export default function News({ onShowBlogs }) {
+  //.....Content
+}
+```
+
+- When user click on the User div/section then trigger the onShowBlogs, this will show the blog section
+
+```html
+<div className="user" onClick="{onShowBlogs}">
+  {/* To use image in react we need to import it */}
+  <img src="{useImg}" alt="{useImg}" />
+  <p>Utkarsh's Blog</p>
+</div>
+```
+
+- In Blog.jsx file take the prop
+
+```jsx
+export default function Blogs({ onBack }) {
+  // .....Content
+}
+```
+
+- When User Click on the Back Navigate back to News Component
+
+```html
+<button className="blog-close-btn" onClick="{onBack}">
+  Back
+  <i className="bx bx-chevron-right"></i>
+</button>
+```
+
+6. Handle Visibility of form in Blog Component
+
+- Create state for managing the visibility of blog component
+
+```jsx
+// State to manage form visibility
+// on clicking create new post form should be visible
+const [showForm, setShowForm] = useState(false);
+```
+
+- Based on state variable add conditional rendering to show and hide the form
+
+```jsx
+{
+  showForm ? (
+    // {/* Form Element  */}
+    <div className="blog-right-form">
+      <h1>New Post</h1>
+      <form>
+        <div className="img-upload">
+          <label htmlFor="file-upload" className="file-upload">
+            <i className="bx bx-upload"></i>Upload Image
+          </label>
+          {/* id attribute should match the html for attribute */}
+          <input type="file" id="file-upload" />
+        </div>
+        <input
+          type="text"
+          placeholder="Add Title (Max 60 character)"
+          className="title-input"
+        />
+
+        <textarea className="text-input" placeholder="Add Text"></textarea>
+        <button type="submit" className="submit-btn">
+          Submit Button
+        </button>
+      </form>
+    </div>
+  ) : (
+    <button className="post-btn" onClick={() => setShowForm(true)}>
+      Create New Post
+    </button>
+  );
+}
+```

@@ -28,7 +28,7 @@ const categories = [
   "health",
   "nation",
 ];
-export default function News() {
+export default function News({ onShowBlogs }) {
   // 1. State Declaration
   //State for storing Current value of headline data, Initially null
   const [headline, setHeadline] = useState(null);
@@ -213,7 +213,7 @@ export default function News() {
       <div className="news-content">
         {/* Navbar Component  */}
         <div className="navbar">
-          <div className="user">
+          <div className="user" onClick={onShowBlogs}>
             {/* To use image in react we need to import it */}
             <img src={useImg} alt={useImg} />
             <p>Utkarsh's Blog</p>

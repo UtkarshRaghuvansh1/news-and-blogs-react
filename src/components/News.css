@@ -144,6 +144,10 @@
 .nav-link:hover {
   color: #ff4d4d; /* lighter red on hover */
 }
+/* Set Active  */
+.nav-link.active {
+  color: #ff4d4d; /* lighter red on hover */
+}
 
 .nav-link i {
   font-size: 1.7rem;

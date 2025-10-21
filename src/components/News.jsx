@@ -231,8 +231,10 @@ export default function News({ onShowBlogs }) {
               {categories.map((category) => {
                 return (
                   <a
-                    href=""
-                    className="nav-link"
+                    href="#"
+                    className={`nav-link ${
+                      selectedCategory === category ? "active" : ""
+                    }`}
                     // identify each element uniquely
                     key={category}
                     onClick={(evt) => handleCategoryClick(evt, category)}

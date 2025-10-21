@@ -4,6 +4,8 @@ import { useState } from "react";
 function App() {
   const [showNews, setShowNews] = useState(true);
   const [showBlogs, setShowBlogs] = useState(false);
+  // State to manage and store  blogs that user creates
+  const [blogs, setBlogs] = useState([]);
 
   // Function to handle show blogs component
   const handleShowBlogs = () => {

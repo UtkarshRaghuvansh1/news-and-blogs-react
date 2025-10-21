@@ -530,3 +530,142 @@ const [showForm, setShowForm] = useState(false);
   );
 }
 ```
+
+7. Layout and Styling of My Blog section in News Component
+
+- Structure of MyBlog section
+
+```html
+{/* My Blog section */}
+<div className="my-blogs">
+  <h1 className="my-blogs-heading">My Blogs</h1>
+  <div className="blog-posts">
+    <div className="blog-post">
+      <img src="{blogImg1}" alt="Post Image" />
+      <h3>Lorem ipsum dolor sit.</h3>
+      {/* Edit and Delete Button */}
+      <div className="post-buttons">
+        <button className="edit-post">
+          <i className="bx bxs-edit"></i>
+        </button>
+        <button className="edit-post">
+          <i className="bx bxs-x-circle"></i>
+        </button>
+      </div>
+    </div>
+    <div className="blog-post">
+      <img src="{blogImg2}" alt="Post Image" />
+      <h3>Lorem ipsum dolor sit.</h3>
+      {/* Edit and Delete Button */}
+      <div className="post-buttons">
+        <button className="edit-post">
+          <i className="bx bxs-edit"></i>
+        </button>
+        <button className="edit-post">
+          <i className="bx bxs-x-circle"></i>
+        </button>
+      </div>
+    </div>
+    <div className="blog-post">
+      <img src="{blogImg3}" alt="Post Image" />
+      <h3>Lorem ipsum dolor sit.</h3>
+      {/* Edit and Delete Button */}
+      <div className="post-buttons">
+        <button className="edit-post">
+          <i className="bx bxs-edit"></i>
+        </button>
+        <button className="edit-post">
+          <i className="bx bxs-x-circle"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+- Styling of My Blog section
+
+```css
+/* ************************************ My Blog Section ********************************************* */
+/* Styling My Blog section */
+.my-blogs {
+  width: clamp(20rem, 27cqi, 28%);
+  height: 100%;
+  background-color: #111214;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  row-gap: 3rem;
+  padding-bottom: 2rem;
+}
+.my-blogs-heading {
+  font-family: "Bebus Neue", sans-serif;
+  font-size: 3rem;
+  color: #ddd;
+  letter-spacing: 0.1rem;
+  padding: 2rem;
+}
+.blog-post {
+  flex: 0 1 calc(50% - 0.6rem);
+  border-radius: 1rem;
+  position: relative;
+}
+.blog-posts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1.2rem;
+  padding: 1.2rem;
+}
+
+.blog-posts img {
+  width: 100%;
+  height: 100%;
+  object-fit: conver;
+  border-radius: 1rem;
+  opacity: 0.5;
+}
+.blog-post h3 {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 0 0 1rem 1rem;
+  font-size: 1.6rem;
+  font-weight: 300;
+  text-transform: uppercase;
+  line-height: 1.6rem;
+  color: #fff;
+  /* Long word will break to new line  */
+  overflow-wrap: break-word;
+}
+
+.post-buttons {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  justify-content: center;
+  column-gap: 2rem;
+
+  /* Hide the button Initially, Show them once user hover  */
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s;
+}
+/* Hide the button Initially, Show them once user hover  */
+.blog-post:hover .post-buttons {
+  opacity: 1;
+  visibility: visible;
+}
+
+.post-buttons button {
+  background-color: transparent;
+  border: none;
+  font-size: 2.5rem;
+  color: #fff;
+  cursor: pointer;
+}
+```

@@ -71,11 +71,14 @@
 }
 
 /* Styling form in blog  */
-.blog-right-form {
+.blog-right-form.visible {
   display: flex;
   flex-direction: column;
   align-items: center;
   row-gap: 5rem;
+}
+.blog-right-form.hidden {
+  display: none;
 }
 
 .blog-right-form h1 {
@@ -124,12 +127,27 @@
   aspect-ratio: 5/3;
   resize: none;
 }
+/* Hide Scrollbar in text area  */
+.text-input::-webkit-scrollbar {
+  display: none;
+}
+
+/* Form Validation CSS  */
+.text-input.invalid,
+.title-input.invalid {
+  border-bottom: 1rem solid #c4143a;
+}
 .title-input::placeholder,
 .text-input::placeholder {
   font-family: "Comfortaa", sans-serif;
   font-size: 1.3rem;
   color: #b88efc;
   opacity: 0.5;
+}
+/* Form Validation CSS  for placeholder*/
+.text-input.invalid::placeholder,
+.title-input.invalid::placeholder {
+  color: #c4143a;
 }
 .title-input::placeholder {
   font-size: 1.6rem;
@@ -163,4 +181,32 @@
   font-style: italic;
   color: #b88efc;
   opacity: 0.9;
+}
+
+/* ✅ Toast-style success message at top center */
+.success-msg {
+  position: fixed;
+  top: 2rem; /* distance from top */
+  left: 75%; /* move to center horizontally */
+  top: 25%;
+  transform: translateX(-50%); /* truly center it */
+  background: linear-gradient(to right, #b88efc, #6877f4);
+  color: #fff;
+  font-size: 1.6rem;
+  padding: 1rem 2rem;
+  border-radius: 5rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+  opacity: 1;
+  animation: fadeOut 2s ease-in-out forwards;
+  z-index: 9999;
+}
+
+/* Optional fadeOut animation if you want it to disappear smoothly */
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }

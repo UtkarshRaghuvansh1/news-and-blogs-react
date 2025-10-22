@@ -885,6 +885,249 @@ export default function News({ onShowBlogs, blogs }) {
 </div>;
 ```
 
+8. Handling form submission message and visibilty of form
+
+- Create a new state to handle form submission message
+
+```jsx
+// State to Handle submission of blog post
+const [submitted, setSubmitted] = useState(false);
+```
+
+- Remove old conditional rendering logic for visibility of form
+- remove showform conditional rendering logic
+
+```jsx
+{
+  /* ************** Old Form submision logic *************  */
+}
+{
+  showForm ? (
+    // {/* Form Element  */}
+    <div className="blog-right-form">// ....Content</div>
+  ) : (
+    <button className="post-btn" onClick={() => setShowForm(true)}>
+      Create New Post
+    </button>
+  );
+}
+```
+
+- Add new conditional rendering Logic add new class for visibility
+
+```jsx
+{
+  /* Form Element  */
+}
+<div className={`blog-right-form ${showForm ? "visible" : "hidden"}`}>
+  // ...Content
+</div>;
+```
+
+- Update Css accorinding to new class
+
+```css
+/* Styling form in blog  */
+.blog-right-form.visible {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 5rem;
+}
+.blog-right-form.hidden {
+  display: none;
+}
+```
+
+- Now create a new state variable to handle the form submission
+
+```jsx
+// State to Handle submission of blog post
+const [submitted, setSubmitted] = useState(false);
+```
+
+- Once form is submitted set submitted state to true in handleSubmit function
+
+```js
+// clear the form fields
+setImage(null);
+setBlogTitle("");
+setContent("");
+
+// Hide the form after submission
+setShowForm(false);
+// Once form submitted set submitted to true
+setSubmitted(true);
+```
+
+- Based on submitted and showForm state show visibilty of Create Post button
+
+```jsx
+{
+  !showForm && !submitted && (
+    <button className="post-btn" onClick={() => setShowForm(true)}>
+      Create New Post
+    </button>
+  );
+}
+```
+
+- Show success message on form submission with the submitted state variable
+
+```jsx
+{
+  /* Form Submission Message */
+}
+{
+  submitted && <div className="success-msg">Post Created Successfully!</div>;
+}
+```
+
+- Once the submission is done, automatically navigate to News component
+- To see the blog post created
+- For this I have onBack function which I can use
+- After 2.1 sec auto navigate to News component
+- In handleSubmit function create setTimeOut() at last
+
+```jsx
+//Display Submission messaage for 2 sec then display the news component
+setTimeout(() => {
+  setSubmitted(false);
+  onBack();
+}, 2100);
+```
+
+- Add Css for success message
+
+```css
+/* Toast-style success message at top center */
+.success-msg {
+  position: fixed;
+  top: 2rem; /* distance from top */
+  left: 75%; /* move to center horizontally */
+  top: 25%;
+  transform: translateX(-50%); /* truly center it */
+  background: linear-gradient(to right, #b88efc, #6877f4);
+  color: #fff;
+  font-size: 1.6rem;
+  padding: 1rem 2rem;
+  border-radius: 5rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+  opacity: 1;
+  animation: fadeOut 2s ease-in-out forwards;
+  z-index: 9999;
+}
+
+/* Optional fadeOut animation if you want it to disappear smoothly */
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+```
+
+9. Adding Form validation of Title and content fields in form
+
+- Create new State variables to handle valid text and title fields
+
+```jsx
+//State variables for Form Validation
+const [validTitle, setValidTitle] = useState(true);
+const [validText, setValidText] = useState(true);
+```
+
+- Creating a function to handle change in title and textarea input fields
+
+```jsx
+// Functions to perform Form Validation
+// This function perform validation for form title
+const handleTitleChange = (evt) => {
+  if (evt.target.value.length <= 60) {
+    setBlogTitle(evt.target.value);
+    setValidTitle(true);
+  }
+};
+// This function perform validation for form textarea
+const handleContentChange = (evt) => {
+  setContent(evt.target.value);
+  setValidText(true);
+};
+```
+
+- Add new css classes for valid and invalid form also add these 2 function in onchange event
+
+```jsx
+<input
+  type="text"
+  placeholder="Add Title (Max 60 character)"
+  className={`title-input ${!validTitle ? "invalid" : "valid"}`}
+  value={blogTitle}
+  onChange={handleTitleChange}
+/>
+
+<textarea
+  className={`text-input ${!validText ? "invalid" : "valid"}`}
+  placeholder="Add Text"
+  value={content}
+  onChange={handleContentChange}
+></textarea>
+```
+
+- Add css for new classes for form validation
+
+```css
+/* Form Validation CSS  */
+.text-input.invalid,
+.title-input.invalid {
+  border-bottom: 1rem solid #c4143a;
+}
+/* Form Validation CSS  for placeholder*/
+.text-input.invalid::placeholder,
+.title-input.invalid::placeholder {
+  color: #c4143a;
+}
+```
+
+- set state after submitting the form in handleSubmit function ( WRONG LOGIC)
+
+```jsx
+// Old Logic
+if (!validText || !validTitle) {
+  if (!validText) setValidText(false);
+
+  if (!validTitle) setValidTitle(false);
+
+  return;
+}
+```
+
+- Encountered error : form submission logic was not working, submitting the empty form
+
+  - This is a common issue with form validation in React when the initial state is valid (true).
+  - If the user never interacts with the input, the onChange handlers (which update the validation state) are never called,
+  - and the handleSubmit function proceeds with the initial true validation state, submitting the empty form.
+
+- Fix in handleForm function:
+
+```jsx
+// CORE FIX: Validate fields based on current state values of title and content
+const titleValid = blogTitle.trim().length > 0 && blogTitle.trim().length <= 60;
+const contentValid = content.trim().length > 0;
+
+// Update validation states for visual feedback (e.g., highlighting borders)
+setValidTitle(titleValid);
+setValidText(contentValid);
+
+// If validation fails, stop the submission process immediately
+if (!titleValid || !contentValid) {
+  console.log("Validation failed. Please fill out all required fields.");
+  return;
+}
+```
+
 ## Weather Component
 
 ### Improve Efficiency of weather component

@@ -154,3 +154,13 @@
 .submit-btn:active {
   transform: translateY(0.2rem);
 }
+
+/* Styling image name after upload  */
+.image-name {
+  margin-top: 0.5rem;
+  margin-left: 2.8rem; /* aligns text under the icon + label */
+  font-size: 1.3rem;
+  font-style: italic;
+  color: #b88efc;
+  opacity: 0.9;
+}

@@ -17,11 +17,19 @@ function App() {
     setShowBlogs(false);
     setShowNews(true);
   };
+
+  // This function handles to add a new blog to the blogs state
+  const handleCreateBlog = (newBlog) => {
+    setBlogs((prevBlogs) => [...prevBlogs, newBlog]);
+  };
+
   return (
     <div className="container">
       <div className="news-and-blog">
-        {showNews && <News onShowBlogs={handleShowBlogs} />}
-        {showBlogs && <Blogs onBack={handleBackToNews} />}
+        {showNews && <News onShowBlogs={handleShowBlogs} blogs={blogs} />}
+        {showBlogs && (
+          <Blogs onBack={handleBackToNews} onCreateBlog={handleCreateBlog} />
+        )}
       </div>
     </div>
   );

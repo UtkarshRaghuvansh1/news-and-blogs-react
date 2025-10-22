@@ -669,3 +669,266 @@ const [showForm, setShowForm] = useState(false);
   cursor: pointer;
 }
 ```
+
+7. Handling the Submission of new post created and Displaying them in My Blog section in News Component
+
+- User will create a new blog by clicking the create post
+- Creating state to store the new blog added in App.jsx
+
+```jsx
+// State to manage and store  blogs that user creates
+const [blogs, setBlogs] = useState([]);
+```
+
+- Create a function to handle Addition of new blog created
+
+```jsx
+// This function handles to add a new blog to the blogs state
+const handleCreateBlog = (newBlog) => {
+  setBlogs((prevBlogs) => [...prevBlogs, newBlog]);
+};
+```
+
+- passing the blogs state variable to News Component which will help in displaying the blogs in My Blogs Section
+
+```jsx
+{
+  showNews && <News onShowBlogs={handleShowBlogs} blogs={blogs} />;
+}
+```
+
+- passing the handleCreateBlog function to Blog Component which will help in adding new blog on submission
+
+```jsx
+{
+  showBlogs && (
+    <Blogs onBack={handleBackToNews} onCreateBlog={handleCreateBlog} />
+  );
+}
+```
+
+- Receiving the prop passed from App component to Blog Component in Blog.jsx
+
+```jsx
+export default function Blogs({ onBack, onCreateBlog }) {
+  // ...Content
+}
+```
+
+- Creating state variable to handle image, image name uploaded, title, content of blog post created
+
+```jsx
+// State to hold data of image when user create a new blog post
+const [image, setImage] = useState(null);
+
+// State to handle Image name to show what Image uploaded
+const [imgName, setImgName] = useState("");
+
+// State to hold title of blog post which user create
+const [blogTitle, setBlogTitle] = useState("");
+
+// State to hold content of blog post which user create
+const [content, setContent] = useState("");
+```
+
+- Create a function which handles the image upload
+- It will set the image state and image name state
+
+```jsx
+// This function handles the image upload process
+const handleImageChange = (evt) => {
+  const file = evt.target.files[0];
+  // This condition checks if there are any file selected by user
+  if (evt.target.files && evt.target.files[0]) {
+    setImgName(file.name);
+    // FileReader - The file reader object allows us to read the contents of files stored on the user's computer.
+    // It provides methods to read file data in various formats, such as text or base64 encoded strings.
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      // The reader.result property contains the base64 encoded data of the selected image file.
+      setImage(reader.result);
+    };
+    // The readAsDataURL method reads the contents of the file and converts it into a base64 encoded string.
+    // Converting the file into a base64 encoded string allows us to use the image data directly in our HTML
+    // as a data URL.
+    reader.readAsDataURL(evt.target.files[0]);
+  }
+};
+```
+
+- Now Create a function to handle form submission when User press submit
+- This function will :
+  - create the new blog object
+  - update the state in App component through onCreateBlog(newBlog);
+  - reset the form state
+
+```jsx
+// This function handles the user submission of form
+// When user create new blog post it will gather all the input
+// and return new blog post object and update state
+const handleSubmit = (evt) => {
+  //prevent default behaviour - page realod on submission of form
+  evt.preventDefault();
+  const newBlog = {
+    image: image || noImg,
+    blogTitle,
+    content,
+  };
+  onCreateBlog(newBlog); // state updated in App content
+
+  // clear the form fields
+  setImage(null);
+  setBlogTitle("");
+  setContent("");
+
+  // Hide the form after submission
+  setShowForm(false);
+};
+```
+
+- Update the JSX now for the form element
+  - pass function handleSubmit to form element
+  - pass function handleImageChange to input field of image upload
+  - show the image name uploaded
+  - add value and onChange function to Blog Title
+  - add value and onChange function to textarea
+
+```jsx
+<form onSubmit={handleSubmit}>
+  <div className="img-upload">
+    <label htmlFor="file-upload" className="file-upload">
+      <i className="bx bx-upload"></i>Upload Image
+    </label>
+    {/* id attribute should match the html for attribute */}
+    <input type="file" id="file-upload" onChange={handleImageChange} />
+
+    {/* ✅ Show uploaded image name only */}
+    {imgName && <p className="image-name">Uploaded image : {imgName}</p>}
+  </div>
+
+  <input
+    type="text"
+    placeholder="Add Title (Max 60 character)"
+    className="title-input"
+    value={blogTitle}
+    onChange={(evt) => setBlogTitle(evt.target.value)}
+  />
+
+  <textarea
+    className="text-input"
+    placeholder="Add Text"
+    value={content}
+    onChange={(evt) => setContent(evt.target.value)}
+  ></textarea>
+  <button type="submit" className="submit-btn">
+    Submit Button
+  </button>
+</form>
+```
+
+- Css for image upload
+
+```css
+/* Styling image name after upload  */
+.image-name {
+  margin-top: 0.5rem;
+  margin-left: 2.8rem; /* aligns text under the icon + label */
+  font-size: 1.3rem;
+  font-style: italic;
+  color: #b88efc;
+  opacity: 0.9;
+}
+```
+
+- Now update the News Component based on blog created in News.jsx
+- Take the Prop passed in App component to the News Component
+
+```jsx
+export default function News({ onShowBlogs, blogs }) {
+  //...Content
+}
+```
+
+- Update the JSX of My Blogs section
+
+```jsx
+{
+  /* My Blog section  */
+}
+<div className="my-blogs">
+  <h1 className="my-blogs-heading">My Blogs</h1>
+  <div className="blog-posts">
+    {console.log("Blogs ", blogs)}
+    {blogs && blogs.length > 0 ? (
+      blogs.map((blog, index) => {
+        return (
+          <div className="blog-post" key={index}>
+            <img src={blog.image || noImg} alt={blog.blogTitle} />
+            <h3>{blog.blogTitle}</h3>
+            {/* <p>{blog.content}</p> */}
+            {/* Edit and Delete Button  */}
+            <div className="post-buttons">
+              <button className="edit-post">
+                <i className="bx bxs-edit"></i>
+              </button>
+              <button className="edit-post">
+                <i className="bx bxs-x-circle"></i>
+              </button>
+            </div>
+          </div>
+        );
+      })
+    ) : (
+      <p>No Blog Posted yet !</p>
+    )}
+  </div>
+</div>;
+```
+
+## Weather Component
+
+### Improve Efficiency of weather component
+
+- In React, every time a component re-renders, all of its functions are re-created in memory — even if their logic hasn’t changed.
+
+- Currently :
+
+```jsx
+function Weather() {
+  const handleSearch = () => { ... };
+  const handleKeyDown = (e) => { ... };
+  const getWeatherIcon = (type) => { ... };
+
+  return (...);
+}
+```
+
+- If Weather component re-renders 10 times, these functions get created 10 times.
+
+  - This increase the memory usage
+  - It can cause unnecessary re-renders of child components that receive these functions as props, since function identity changes on every render.(If there are child components)
+
+- Use of useCallBack() => Only re-create this function if one of its dependencies changes.
+- React reuses the previous one from memory instead creating new one — if dependencies remain the same.
+
+```js
+const handleSearch = useCallback(() => {
+  if (searchLocation.trim()) {
+    setLocation(searchLocation);
+    setSearchLocation("");
+  }
+}, [searchLocation]);
+```
+
+- Internally:
+
+  - React stores the function reference in memory and checks dependencies:
+
+  - If searchLocation hasn’t changed, React returns the same function reference.
+
+  - If it has changed, React re-creates a new one.
+
+  - This means:
+    - Less memory churn (fewer objects created/destroyed)
+    - Fewer re-renders in child components
+    - More stable references for useEffect or event listeners

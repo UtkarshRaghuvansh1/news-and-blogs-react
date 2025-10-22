@@ -34,7 +34,7 @@ const categories = [
   "health",
   "nation",
 ];
-export default function News({ onShowBlogs }) {
+export default function News({ onShowBlogs, blogs }) {
   // 1. State Declaration
   //State for storing Current value of headline data, Initially null
   const [headline, setHeadline] = useState(null);
@@ -60,7 +60,7 @@ export default function News({ onShowBlogs }) {
   // 11.2 It store the detail of the article which user clicked on
   const [selectedArticle, setSelectedArticle] = useState(null);
 
-  // ******************************* Old Code **************************************
+  /* ******************************* Old Code **************************************
   // 2. Use effect for performing side effect (fetching data from api)
   // [] -> dependency telling react to run once after Intial render of component
   // In our case we need to fetch the data once when component Mounts
@@ -138,7 +138,7 @@ export default function News({ onShowBlogs }) {
   //   //8.4 Serachquery will be also in dependencies array
   // }, [selectedCategory, searchQuery]);
 
-  // ********************************************************************
+  // ********************************************************************. */
 
   // ******************** Custom hook to fetch the data *********************
   const API_KEY = "e44e09001f7655277af07cd5512bf391";
@@ -331,45 +331,29 @@ export default function News({ onShowBlogs }) {
         <div className="my-blogs">
           <h1 className="my-blogs-heading">My Blogs</h1>
           <div className="blog-posts">
-            <div className="blog-post">
-              <img src={blogImg1} alt="Post Image" />
-              <h3>Lorem ipsum dolor sit.</h3>
-              {/* Edit and Delete Button  */}
-              <div className="post-buttons">
-                <button className="edit-post">
-                  <i className="bx bxs-edit"></i>
-                </button>
-                <button className="edit-post">
-                  <i className="bx bxs-x-circle"></i>
-                </button>
-              </div>
-            </div>
-            <div className="blog-post">
-              <img src={blogImg2} alt="Post Image" />
-              <h3>Lorem ipsum dolor sit.</h3>
-              {/* Edit and Delete Button  */}
-              <div className="post-buttons">
-                <button className="edit-post">
-                  <i className="bx bxs-edit"></i>
-                </button>
-                <button className="edit-post">
-                  <i className="bx bxs-x-circle"></i>
-                </button>
-              </div>
-            </div>
-            <div className="blog-post">
-              <img src={blogImg3} alt="Post Image" />
-              <h3>Lorem ipsum dolor sit.</h3>
-              {/* Edit and Delete Button  */}
-              <div className="post-buttons">
-                <button className="edit-post">
-                  <i className="bx bxs-edit"></i>
-                </button>
-                <button className="edit-post">
-                  <i className="bx bxs-x-circle"></i>
-                </button>
-              </div>
-            </div>
+            {console.log("Blogs ", blogs)}
+            {blogs && blogs.length > 0 ? (
+              blogs.map((blog, index) => {
+                return (
+                  <div className="blog-post" key={index}>
+                    <img src={blog.image || noImg} alt={blog.blogTitle} />
+                    <h3>{blog.blogTitle}</h3>
+                    {/* <p>{blog.content}</p> */}
+                    {/* Edit and Delete Button  */}
+                    <div className="post-buttons">
+                      <button className="edit-post">
+                        <i className="bx bxs-edit"></i>
+                      </button>
+                      <button className="edit-post">
+                        <i className="bx bxs-x-circle"></i>
+                      </button>
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <p>No Blog Posted yet !</p>
+            )}
           </div>
         </div>
 

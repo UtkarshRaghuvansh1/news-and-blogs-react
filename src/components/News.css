@@ -263,6 +263,7 @@
 
 /* ************************************ My Blog Section ********************************************* */
 /* Styling My Blog section */
+
 .my-blogs {
   width: clamp(20rem, 27cqi, 28%);
   height: 100%;
@@ -273,18 +274,15 @@
   row-gap: 3rem;
   padding-bottom: 2rem;
 }
+
 .my-blogs-heading {
-  font-family: "Bebus Neue", sans-serif;
+  font-family: "Bebas Neue", sans-serif;
   font-size: 3rem;
   color: #ddd;
   letter-spacing: 0.1rem;
   padding: 2rem;
 }
-.blog-post {
-  flex: 0 1 calc(50% - 0.6rem);
-  border-radius: 1rem;
-  position: relative;
-}
+
 .blog-posts {
   display: flex;
   flex-wrap: wrap;
@@ -293,13 +291,20 @@
   padding: 1.2rem;
 }
 
-.blog-posts img {
+.blog-post {
+  flex: 0 1 calc(50% - 0.6rem);
+  border-radius: 1rem;
+  position: relative;
+}
+
+.blog-post img {
   width: 100%;
   height: 100%;
-  object-fit: conver;
+  object-fit: cover;
   border-radius: 1rem;
   opacity: 0.5;
 }
+
 .blog-post h3 {
   width: 100%;
   position: absolute;
@@ -313,7 +318,6 @@
   text-transform: uppercase;
   line-height: 1.6rem;
   color: #fff;
-  /* Long word will break to new line  */
   overflow-wrap: break-word;
 }
 
@@ -324,13 +328,11 @@
   display: flex;
   justify-content: center;
   column-gap: 2rem;
-
-  /* Hide the button Initially, Show them once user hover  */
   opacity: 0;
   visibility: hidden;
   transition: all 0.3s;
 }
-/* Hide the button Initially, Show them once user hover  */
+
 .blog-post:hover .post-buttons {
   opacity: 1;
   visibility: visible;

@@ -2,6 +2,7 @@ import Calender from "./Calender";
 import Weather from "./Weather";
 import WeatherCleanCode from "./WeatherCleanCode";
 import NewsModal from "./NewsModal";
+import BlogsModal from "./BlogsModal";
 import "./News.css";
 import useImg from "../assets/images/user.jpeg";
 // import techImg from "../assets/images/tech.jpg";
@@ -11,10 +12,10 @@ import useImg from "../assets/images/user.jpeg";
 // import healthImg from "../assets/images/health.jpg";
 // import nationImg from "../assets/images/nation.jpg";
 
-import blogImg1 from "../assets/images/blog1.jpg";
-import blogImg2 from "../assets/images/blog2.jpg";
-import blogImg3 from "../assets/images/blog3.jpg";
-import blogImg4 from "../assets/images/blog4.jpg";
+// import blogImg1 from "../assets/images/blog1.jpg";
+// import blogImg2 from "../assets/images/blog2.jpg";
+// import blogImg3 from "../assets/images/blog3.jpg";
+// import blogImg4 from "../assets/images/blog4.jpg";
 
 import noImg from "../assets/images/no-img.png";
 // import axios from "axios";
@@ -59,6 +60,12 @@ export default function News({ onShowBlogs, blogs }) {
   const [showModal, setShowModal] = useState(false);
   // 11.2 It store the detail of the article which user clicked on
   const [selectedArticle, setSelectedArticle] = useState(null);
+
+  // State variables to handle blog post Modal box visibility
+  // currently selected post
+  const [selectedPost, setSelectedPost] = useState(null);
+  // Blog post modal is visible or not
+  const [showBlogModal, setShowBlogModal] = useState(false);
 
   /* ******************************* Old Code **************************************
   // 2. Use effect for performing side effect (fetching data from api)
@@ -194,6 +201,19 @@ export default function News({ onShowBlogs, blogs }) {
     setShowModal(true);
   };
 
+  // Function to capture the user's interaction with a specific
+  // blog post, update the state to store the selected blog post details, and trigger the model to display
+  // the full details of the selected blog post.
+  const handlBlockClick = (blog) => {
+    console.log("Blog Opened", blog);
+    setSelectedPost(blog);
+    setShowBlogModal(true);
+  };
+  // function to handle when user closes the Modal box
+  const closeBlogModal = () => {
+    setShowBlogModal(false);
+    setSelectedPost(null);
+  };
   return (
     <div className="news">
       <header className="news-header">
@@ -331,11 +351,14 @@ export default function News({ onShowBlogs, blogs }) {
         <div className="my-blogs">
           <h1 className="my-blogs-heading">My Blogs</h1>
           <div className="blog-posts">
-            {console.log("Blogs ", blogs)}
             {blogs && blogs.length > 0 ? (
               blogs.map((blog, index) => {
                 return (
-                  <div className="blog-post" key={index}>
+                  <div
+                    className="blog-post"
+                    key={index}
+                    onClick={() => handlBlockClick(blog)}
+                  >
                     <img src={blog.image || noImg} alt={blog.blogTitle} />
                     <h3>{blog.blogTitle}</h3>
                     {/* <p>{blog.content}</p> */}
@@ -353,6 +376,13 @@ export default function News({ onShowBlogs, blogs }) {
               })
             ) : (
               <p>No Blog Posted yet !</p>
+            )}
+            {selectedPost && showBlogModal && (
+              <BlogsModal
+                show={showBlogModal}
+                blog={selectedPost}
+                onClose={closeBlogModal}
+              />
             )}
           </div>
         </div>

@@ -28,9 +28,21 @@ export default function Blogs({ onBack, onCreateBlog }) {
 
   // This function handles the image upload process
   const handleImageChange = (evt) => {
-    const file = evt.target.files[0];
     // This condition checks if there are any file selected by user
     if (evt.target.files && evt.target.files[0]) {
+      const file = evt.target.files[0];
+      console.log("Uploaded Image properties", file);
+      console.log("Uploaded Image size", file.size);
+      console.log("Uploaded Image name", file.name);
+
+      // If file size exceed 1 MP alert it
+      const maxSize = 1 * 1024 * 1024;
+      const errorMessage =
+        "Image size exceeds the 1 MB limit. Please select a smaller file.";
+      if (file.size > maxSize) {
+        alert(errorMessage);
+        return;
+      }
       setImgName(file.name);
       // FileReader - The file reader object allows us to read the contents of files stored on the user's computer.
       // It provides methods to read file data in various formats, such as text or base64 encoded strings.
@@ -42,7 +54,7 @@ export default function Blogs({ onBack, onCreateBlog }) {
       // The readAsDataURL method reads the contents of the file and converts it into a base64 encoded string.
       // Converting the file into a base64 encoded string allows us to use the image data directly in our HTML
       // as a data URL.
-      reader.readAsDataURL(evt.target.files[0]);
+      reader.readAsDataURL(file);
     }
   };
 

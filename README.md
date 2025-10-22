@@ -1128,6 +1128,35 @@ if (!titleValid || !contentValid) {
 }
 ```
 
+10. Store blogs in Local storage
+
+- In the App.jsx store the blogs in local storage while creating new blog
+- update the handleCreateBlog function
+
+```jsx
+const handleCreateBlog = (newBlog) => {
+  setBlogs((prevBlogs) => {
+    const updatedBlogs = [...prevBlogs, newBlog];
+    // save the blogs to local storage
+    localStorage.setItem("blogs", JSON.stringify(updatedBlogs));
+    return updatedBlogs;
+  });
+};
+```
+
+- When page reloads and component render 1st time get the items from the local storage
+- use useeffect hooks
+
+```jsx
+// We want to load any previously saved blog posts from the local storage.
+// This ensures that our application has access to any data that was stored during previous sessions.
+useEffect(() => {
+  const savedBlogs = JSON.parse(localStorage.getItem("blogs")) || [];
+  // update the state of blogs
+  setBlogs(savedBlogs);
+}, []);
+```
+
 ## Weather Component
 
 ### Improve Efficiency of weather component

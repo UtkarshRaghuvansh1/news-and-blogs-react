@@ -1,6 +1,6 @@
 import News from "./components/News";
 import Blogs from "./components/Blogs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 function App() {
   const [showNews, setShowNews] = useState(true);
   const [showBlogs, setShowBlogs] = useState(false);
@@ -18,9 +18,21 @@ function App() {
     setShowNews(true);
   };
 
+  // We want to load any previously saved blog posts from the local storage.
+  // This ensures that our application has access to any data that was stored during previous sessions.
+  useEffect(() => {
+    const savedBlogs = JSON.parse(localStorage.getItem("blogs")) || [];
+    // update the state of blogs
+    setBlogs(savedBlogs);
+  }, []);
   // This function handles to add a new blog to the blogs state
   const handleCreateBlog = (newBlog) => {
-    setBlogs((prevBlogs) => [...prevBlogs, newBlog]);
+    setBlogs((prevBlogs) => {
+      const updatedBlogs = [...prevBlogs, newBlog];
+      // save the blogs to local storage
+      localStorage.setItem("blogs", JSON.stringify(updatedBlogs));
+      return updatedBlogs;
+    });
   };
 
   return (

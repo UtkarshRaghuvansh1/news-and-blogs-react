@@ -1195,9 +1195,7 @@ const handleSearch = useCallback(() => {
 - Internally:
 
   - React stores the function reference in memory and checks dependencies:
-
   - If searchLocation hasn’t changed, React returns the same function reference.
-
   - If it has changed, React re-creates a new one.
 
   - This means:

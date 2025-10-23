@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import "./Weather.css";
 const API_KEY = "0857bdfbf9822bcb5f4d0f481d5e160a";
 export default function Weather() {
+  console.log("Weather Component Rendered");
   // 1. using open weather map api
   // 1.1 Purpose to this state to store the weather data fetched from Open Weather Map API
   const [data, setData] = useState({});
@@ -34,8 +35,9 @@ export default function Weather() {
   }, []);
 
   // 1.2 Serach function -> resposible of fetching weather data from API
-  const search = async () => {
+  const search = useCallback(async () => {
     try {
+      console.log("Search Click works");
       const URL = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=Metric&appid=${API_KEY}`;
 
       // 1.3 http get request using axios
@@ -61,19 +63,22 @@ export default function Weather() {
         console.error("Error fetching weather data:", error);
       }
     }
-  };
+  }, [location]);
 
   // 2.2 function to update the location whatever user types
   // This function will be called every time user types in the input field
-  const handleInputChange = (evt) => {
-    // console.log("Click works");
-    evt.preventDefault();
-    setLocation(evt.target.value);
-  };
+  const handleInputChange = useCallback(
+    (evt) => {
+      console.log("handleInputChange Click works");
+      evt.preventDefault();
+      setLocation(evt.target.value);
+    },
+    [search]
+  );
 
   //4. Function which will handle which icon to be displayed
   const getWeatherIcon = (weatherType) => {
-    // console.log("Weather Type", weatherType);
+    console.log("Weather Type");
     switch (weatherType) {
       case "Clear":
         return <i className="bx bxs-sun"></i>;

@@ -172,6 +172,7 @@ export default function News({ onShowBlogs, blogs, onEditBlog, onDeleteBlog }) {
   // evt -> event object which is automatically passed when even occures
   // category -> Category on which user cliked on
   const handleCategoryClick = (evt, category) => {
+    console.log("Category Clicked:", category);
     // Normally when we click on a link, default behaviour of the browser is to navigate to the URL specified
     // in href attribute, Since our category link are not meant to navigate to new page but instead update the content dynamically
     // That is why evt.preventDefault --> to prevent this default behaviour
@@ -180,6 +181,10 @@ export default function News({ onShowBlogs, blogs, onEditBlog, onDeleteBlog }) {
     // this will trigger re-render of the component
     // Also refetch the article based on selected category
     setSelectedCategory(category);
+
+    // Reset search query and input when category is selected
+    setSearchQuery("");
+    setSearchInput("");
   };
 
   // 8.5 Create a form submission function to handle our serach
@@ -192,6 +197,14 @@ export default function News({ onShowBlogs, blogs, onEditBlog, onDeleteBlog }) {
     setSearchQuery(searchInput);
     // Once user serahced using seacrh query, empty the input box
     setSearchInput("");
+
+    // Also reset the selected category to general
+    const searchedNews = searchInput.toLowerCase().trim();
+    if (categories.includes(searchedNews)) {
+      setSelectedCategory(searchedNews);
+      setSearchQuery("");
+      return;
+    }
   };
 
   // 11.3 This function is called when user clicks on the article
@@ -301,6 +314,9 @@ export default function News({ onShowBlogs, blogs, onEditBlog, onDeleteBlog }) {
         <div className="news-section">
           {loading ? (
             <p>Loading News...</p>
+          ) : error ? (
+            // 9.2 Show message if no results found
+            <p className="no-results">Error : {error}</p>
           ) : headline ? (
             // Headline Section
             // 11.5 Modal Box
@@ -316,6 +332,7 @@ export default function News({ onShowBlogs, blogs, onEditBlog, onDeleteBlog }) {
                   e.target.onerror = null; // prevent infinite loop
                   e.target.src = noImg; // set fallback image
                 }}
+                loading="lazy"
               />
               <h2 className="headline-title">
                 {headline.title}
@@ -323,11 +340,11 @@ export default function News({ onShowBlogs, blogs, onEditBlog, onDeleteBlog }) {
               </h2>
             </div>
           ) : (
-            // 9.2 Show message if no results found
-            <p className="no-results">{error}</p>
+            // If NOT loading AND NOT error AND NO headline (means search was empty)
+            <p className="no-results">No articles found for this search.</p>
           )}
           {/* News Grid Section  */}
-          {news.length > 0 ? (
+          {!loading && !error && news.length > 0 ? (
             <>
               <div className="news-grid">
                 {news.map((article, index) => {
@@ -346,6 +363,7 @@ export default function News({ onShowBlogs, blogs, onEditBlog, onDeleteBlog }) {
                           e.target.onerror = null; // prevent infinite loop
                           e.target.src = noImg; // set fallback image
                         }}
+                        loading="lazy"
                       />
                       <h3>
                         {article.title}
@@ -368,10 +386,7 @@ export default function News({ onShowBlogs, blogs, onEditBlog, onDeleteBlog }) {
               />
               {/* <Bookmarks onClose={() => setShowModal(false)} /> */}
             </>
-          ) : (
-            // 9.4 If no headline (and hence, no news at all)
-            <p className="no-results"></p>
-          )}
+          ) : null}
         </div>
         {/* My Blog section  */}
         <div className="my-blogs">

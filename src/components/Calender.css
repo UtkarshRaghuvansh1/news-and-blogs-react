@@ -5,3 +5,23 @@
   background-color: #111214;
   border-radius: 1rem;
 }
+
+/* =======================
+   Calender.css - Responsive
+========================= */
+
+/* Tablet & below (≤ 900px) */
+@media (max-width: 900px) {
+  .calender {
+    width: 100%;
+    min-width: unset;
+    height: auto;
+  }
+}
+
+/* Small mobile (≤ 500px) */
+@media (max-width: 500px) {
+  .calender {
+    padding: 1rem;
+  }
+}

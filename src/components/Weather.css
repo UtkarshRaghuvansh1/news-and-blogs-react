@@ -96,3 +96,50 @@
   color: #ddd;
   margin-bottom: 12rem;
 }
+
+/* =======================
+   Weather.css - Responsive
+========================= */
+
+/* Tablet & below (≤ 900px) */
+@media (max-width: 900px) {
+  .weather {
+    width: 100%;
+    min-width: unset;
+    height: auto;
+    padding: 1.5rem;
+  }
+
+  .search-location input {
+    width: 100%;
+  }
+
+  .weather-data {
+    row-gap: 1.5rem;
+  }
+}
+
+/* Small mobile (≤ 500px) */
+@media (max-width: 500px) {
+  .weather {
+    padding: 1rem;
+    row-gap: 2rem;
+  }
+
+  .search-top i {
+    font-size: 2rem;
+  }
+
+  .location {
+    font-size: 1.5rem;
+  }
+
+  .weather-data i {
+    font-size: 4rem;
+  }
+
+  .weather-type,
+  .temp {
+    font-size: 1.6rem;
+  }
+}

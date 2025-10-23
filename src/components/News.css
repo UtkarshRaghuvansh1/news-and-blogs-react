@@ -346,6 +346,42 @@
   cursor: pointer;
 }
 
+/* Added Pagination  */
+.pagination {
+  flex-shrink: 0; /* prevent shrinking */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+}
+
+.pagination button {
+  background-color: #6d6767;
+  border: none;
+  padding: 0.5rem 0.9rem;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.pagination button:hover:not(:disabled) {
+  background-color: #7f8c9a;
+  color: white;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination .active {
+  background-color: #5b6671;
+  color: white;
+  font-weight: bold;
+}
+
 /* =======================
    News.css - Responsive
 ========================= */
@@ -399,7 +435,7 @@
 
   .news-content {
     flex-direction: column;
-    height: auto;
+    height: 100%;
     row-gap: 2rem;
   }
 
@@ -444,50 +480,6 @@
     visibility: visible !important;
   }
 }
-
-/* Mobile (≤ 600px) */
-/* @media (max-width: 600px) {
-  .news-header {
-    padding: 0 1.5rem;
-  }
-
-  .logo {
-    font-size: 3.5rem;
-  }
-
-  .search-bar input {
-    width: 18rem;
-  }
-
-  .navbar {
-    flex-direction: column;
-    height: auto;
-    row-gap: 1.5rem;
-  }
-
-  .user {
-    width: 100%;
-  }
-
-  .categories {
-    width: 100%;
-    flex-wrap: wrap;
-  }
-
-  .news-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .weather-calender {
-    flex-direction: column;
-    row-gap: 1.5rem;
-  }
-
-  .news-footer {
-    min-height: 8rem;
-    text-align: center;
-  }
-} */
 
 @media (max-width: 500px) {
   .news-header {

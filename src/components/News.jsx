@@ -204,7 +204,7 @@ export default function News({ onShowBlogs, blogs, onEditBlog, onDeleteBlog }) {
   // Function to capture the user's interaction with a specific
   // blog post, update the state to store the selected blog post details, and trigger the model to display
   // the full details of the selected blog post.
-  const handlBlockClick = (blog) => {
+  const handleBlockClick = (blog) => {
     console.log("Blog Opened", blog);
     setSelectedPost(blog);
     setShowBlogModal(true);
@@ -214,6 +214,32 @@ export default function News({ onShowBlogs, blogs, onEditBlog, onDeleteBlog }) {
     setShowBlogModal(false);
     setSelectedPost(null);
   };
+
+  // ************* Adding Pagination ************
+  // 🧮 Pagination setup
+  const [currentPage, setCurrentPage] = useState(1);
+  const blogsPerPage = 6;
+
+  // Calculate the index range for slicing
+  const indexOfLastBlog = currentPage * blogsPerPage;
+  const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
+  const currentBlogs = blogs.slice(indexOfFirstBlog, indexOfLastBlog);
+
+  // Total pages
+  const totalPages = Math.ceil(blogs.length / blogsPerPage);
+
+  // Update page when blogs change (e.g., deletion)
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages || 1);
+    }
+  }, [blogs]);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <div className="news">
       <header className="news-header">
@@ -350,42 +376,45 @@ export default function News({ onShowBlogs, blogs, onEditBlog, onDeleteBlog }) {
         {/* My Blog section  */}
         <div className="my-blogs">
           <h1 className="my-blogs-heading">My Blogs</h1>
+
           <div className="blog-posts">
             {blogs && blogs.length > 0 ? (
-              blogs.map((blog, index) => {
-                return (
-                  <div
-                    className="blog-post"
-                    key={index}
-                    onClick={() => handlBlockClick(blog)}
-                  >
-                    <img src={blog.image || noImg} alt={blog.blogTitle} />
-                    <h3>{blog.blogTitle}</h3>
-                    {/* <p>{blog.content}</p> */}
-                    {/* Edit and Delete Button  */}
-                    <div className="post-buttons">
-                      <button
-                        className="edit-post"
-                        onClick={() => onEditBlog(blog)}
-                      >
-                        <i className="bx bxs-edit"></i>
-                      </button>
-                      <button
-                        className="delete-post"
-                        onClick={(evt) => {
-                          evt.stopPropagation(); // Prevent triggering blog modal
-                          onDeleteBlog(blog);
-                        }}
-                      >
-                        <i className="bx bxs-x-circle"></i>
-                      </button>
-                    </div>
+              currentBlogs.map((blog, index) => (
+                <div
+                  className="blog-post"
+                  key={index}
+                  onClick={() => handleBlockClick(blog)}
+                >
+                  <img src={blog.image || noImg} alt={blog.blogTitle} />
+                  <h3>{blog.blogTitle}</h3>
+
+                  {/* Edit and Delete Buttons */}
+                  <div className="post-buttons">
+                    <button
+                      className="edit-post"
+                      onClick={(evt) => {
+                        evt.stopPropagation();
+                        onEditBlog(blog);
+                      }}
+                    >
+                      <i className="bx bxs-edit"></i>
+                    </button>
+                    <button
+                      className="delete-post"
+                      onClick={(evt) => {
+                        evt.stopPropagation();
+                        onDeleteBlog(blog);
+                      }}
+                    >
+                      <i className="bx bxs-x-circle"></i>
+                    </button>
                   </div>
-                );
-              })
+                </div>
+              ))
             ) : (
-              <p>No Blog Posted yet !</p>
+              <p>No Blog Posted yet!</p>
             )}
+
             {selectedPost && showBlogModal && (
               <BlogsModal
                 show={showBlogModal}
@@ -394,8 +423,36 @@ export default function News({ onShowBlogs, blogs, onEditBlog, onDeleteBlog }) {
               />
             )}
           </div>
-        </div>
 
+          {/* 🧭 Pagination Controls */}
+          {totalPages > 1 && (
+            <div className="pagination">
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+              >
+                &lt; Prev
+              </button>
+
+              {[...Array(totalPages)].map((_, index) => (
+                <button
+                  key={index + 1}
+                  className={currentPage === index + 1 ? "active" : ""}
+                  onClick={() => handlePageChange(index + 1)}
+                >
+                  {index + 1}
+                </button>
+              ))}
+
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+              >
+                Next &gt;
+              </button>
+            </div>
+          )}
+        </div>
         {/* Weather and Calender Component  */}
         <div className="weather-calender">
           <Weather />

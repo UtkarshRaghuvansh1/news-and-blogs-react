@@ -316,7 +316,7 @@ export default function News({ onShowBlogs, blogs, onEditBlog, onDeleteBlog }) {
             <p>Loading News...</p>
           ) : error ? (
             // 9.2 Show message if no results found
-            <p className="no-results">Error : {error}</p>
+            <p className="no-results">{error}</p>
           ) : headline ? (
             // Headline Section
             // 11.5 Modal Box

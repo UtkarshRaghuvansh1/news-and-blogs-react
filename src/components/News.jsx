@@ -35,7 +35,7 @@ const categories = [
   "health",
   "nation",
 ];
-export default function News({ onShowBlogs, blogs }) {
+export default function News({ onShowBlogs, blogs, onEditBlog, onDeleteBlog }) {
   // 1. State Declaration
   //State for storing Current value of headline data, Initially null
   const [headline, setHeadline] = useState(null);
@@ -274,7 +274,7 @@ export default function News({ onShowBlogs, blogs }) {
         {/* News Component -> headline + news grid  */}
         <div className="news-section">
           {loading ? (
-            <p>Loading Headline news...</p>
+            <p>Loading News...</p>
           ) : headline ? (
             // Headline Section
             // 11.5 Modal Box
@@ -364,10 +364,19 @@ export default function News({ onShowBlogs, blogs }) {
                     {/* <p>{blog.content}</p> */}
                     {/* Edit and Delete Button  */}
                     <div className="post-buttons">
-                      <button className="edit-post">
+                      <button
+                        className="edit-post"
+                        onClick={() => onEditBlog(blog)}
+                      >
                         <i className="bx bxs-edit"></i>
                       </button>
-                      <button className="edit-post">
+                      <button
+                        className="delete-post"
+                        onClick={(evt) => {
+                          evt.stopPropagation(); // Prevent triggering blog modal
+                          onDeleteBlog(blog);
+                        }}
+                      >
                         <i className="bx bxs-x-circle"></i>
                       </button>
                     </div>

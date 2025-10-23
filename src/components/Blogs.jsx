@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import userImg from "../assets/images/user.jpeg";
 import noImg from "../assets/images/no-img.png";
 import "./Blogs.css";
-export default function Blogs({ onBack, onCreateBlog }) {
+export default function Blogs({ onBack, onCreateBlog, editPost, isEditing }) {
   // State to manage form visibility
   // on clicking create new post form should be visible
   const [showForm, setShowForm] = useState(false);
@@ -25,6 +25,24 @@ export default function Blogs({ onBack, onCreateBlog }) {
   //State variables for Form Validation
   const [validTitle, setValidTitle] = useState(true);
   const [validText, setValidText] = useState(true);
+
+  // Going to use the useEffect hook to pre-fill the form fields when editing a blog post
+  // This useEffect will run whenever isEditing or editPost changes
+  useEffect(() => {
+    if (isEditing && editPost) {
+      // If editing, pre-fill the form with existing blog data
+      setImage(editPost.image);
+      setBlogTitle(editPost.blogTitle);
+      setContent(editPost.content);
+      setShowForm(true); // Show the form when editing
+    } else {
+      // If not editing, clear the form
+      setImage(null);
+      setBlogTitle("");
+      setContent("");
+      setShowForm(false);
+    }
+  }, [isEditing, editPost]);
 
   // This function handles the image upload process
   const handleImageChange = (evt) => {
@@ -99,7 +117,8 @@ export default function Blogs({ onBack, onCreateBlog }) {
       blogTitle,
       content,
     };
-    onCreateBlog(newBlog); // state updated in App content
+    // Call the onCreateBlog prop function to add the new blog or update existing one
+    onCreateBlog(newBlog, isEditing); // state updated in App content
 
     // clear the form fields
     setImage(null);
@@ -136,7 +155,7 @@ export default function Blogs({ onBack, onCreateBlog }) {
         )}
         {/* Form Element  */}
         <div className={`blog-right-form ${showForm ? "visible" : "hidden"}`}>
-          <h1>New Post</h1>
+          <h1>{isEditing ? "Edit Post" : "New Post"}</h1>
           <form onSubmit={handleSubmit}>
             <div className="img-upload">
               <label htmlFor="file-upload" className="file-upload">
@@ -170,7 +189,7 @@ export default function Blogs({ onBack, onCreateBlog }) {
               onChange={handleContentChange}
             ></textarea>
             <button type="submit" className="submit-btn">
-              Submit Button
+              {isEditing ? "Update Post" : "Submit Post"}
             </button>
           </form>
         </div>

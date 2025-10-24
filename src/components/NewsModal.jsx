@@ -1,10 +1,152 @@
 import demoImg from "../assets/images/demo.jpg";
 import "./NewsModal.css";
+import { useState, useEffect } from "react";
+// import axios from "axios";
+
 const NewsModal = ({ show, article, onClose }) => {
+  // AI Summary states
+  const [summary, setSummary] = useState("");
+  const [isLoadingSummary, setIsLoadingSummary] = useState(false);
+  const [summaryError, setSummaryError] = useState("");
+  const [showSummary, setShowSummary] = useState(false);
+
+  // Reset summary state when article changes or modal closes
+  useEffect(() => {
+    // Reset state when modal is closed
+    if (!show) {
+      setSummary("");
+      setIsLoadingSummary(false);
+      setSummaryError("");
+      setShowSummary(false);
+    }
+  }, [show]);
+
+  // Reset summary state when article changes
+  useEffect(() => {
+    if (article) {
+      setSummary("");
+      setIsLoadingSummary(false);
+      setSummaryError("");
+      setShowSummary(false);
+    }
+  }, [article?.id, article?.title]); // Reset when article ID or title changes
+
   // 1. Control rendering of the modal component
   if (!show) return null;
 
-  console.log("Article Modal", article);
+  // console.log("Article Modal", article);
+  // console.log("Available article fields:", article ? Object.keys(article) : "No article");
+
+  // AI Summarization function
+  const generateSummary = async () => {
+    if (!article) {
+      setSummaryError("No article content available for summarization");
+      return;
+    }
+
+    setIsLoadingSummary(true);
+    setSummaryError("");
+
+    try {
+      // Simulate AI processing delay for better UX
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      // Combine multiple fields for better summarization
+      const title = article.title || "";
+      const description = article.description || "";
+      const content = article.content || "";
+
+      // console.log("Summarization content:", {
+      //   title: title.substring(0, 100) + "...",
+      //   description: description.substring(0, 100) + "...",
+      //   content: content.substring(0, 500) + "...",
+      //   hasContent: !!content,
+      //   hasDescription: !!description,
+      // });
+
+      // Create comprehensive text by combining available fields
+      let fullText = "";
+      if (title) fullText += title + ". ";
+      if (description) fullText += description + " ";
+      if (content && content !== description) fullText += content + " ";
+
+      console.log("Full text length:", fullText.length);
+      console.log("Full text preview:", fullText);
+
+      // If no content available, show error
+      if (!fullText.trim()) {
+        setSummaryError("No article content available for summarization");
+        return;
+      }
+
+      const sentences = fullText
+        .split(/[.!?]+/)
+        .filter((sentence) => sentence.trim().length > 20);
+
+      console.log("Extracted sentences for summarization:", sentences);
+      console.log(
+        "Extracted sentences for summarization:",
+        sentences[0].length
+      );
+
+      if (sentences.length <= 2) {
+        setSummary([fullText]);
+        setShowSummary(true);
+      } else {
+        // Advanced summarization algorithm
+        const wordCount = fullText.split(" ").length;
+        const targetLength = Math.max(50, Math.min(150, wordCount * 0.3)); // 30% of original length
+
+        // Score sentences by importance (length, position, keywords)
+        const scoredSentences = sentences.map((sentence, index) => {
+          const words = sentence.trim().split(" ");
+          const lengthScore = words.length;
+          const positionScore = index === 0 ? 2 : index < 3 ? 1.5 : 1; // First sentences are more important
+          const keywordScore = [
+            "important",
+            "significant",
+            "major",
+            "key",
+            "main",
+            "primary",
+            "essential",
+          ].reduce(
+            (score, keyword) =>
+              score + (sentence.toLowerCase().includes(keyword) ? 2 : 0),
+            0
+          );
+
+          return {
+            sentence: sentence.trim(),
+            score: lengthScore * positionScore + keywordScore,
+            index,
+          };
+        });
+
+        // Sort by score and select top sentences
+        const selectedSentences = scoredSentences
+          .sort((a, b) => b.score - a.score)
+          .slice(0, Math.min(3, Math.ceil(sentences.length / 2)));
+
+        // Reorder to maintain logical flow
+        const orderedSentences = selectedSentences
+          .sort((a, b) => a.index - b.index)
+          .map((s) => s.sentence);
+
+        // Convert to bullet points format
+        const bulletPoints = orderedSentences
+          .map((sentence) => sentence.trim())
+          .filter((s) => s.length > 0);
+        setSummary(bulletPoints);
+        setShowSummary(true);
+      }
+    } catch (error) {
+      console.error("Error generating summary:", error);
+      setSummaryError("Failed to generate summary. Please try again.");
+    } finally {
+      setIsLoadingSummary(false);
+    }
+  };
 
   // 4.1 Function to format date
   const formatDate = (isoString) => {
@@ -57,17 +199,75 @@ const NewsModal = ({ show, article, onClose }) => {
             </p>
 
             <p className="modal-content-text">{article.description}</p>
-            {/* Read More button  */}
-            {/* 5. Updating read more button  */}
-            <a
-              href={article.url}
-              className="read-more-link"
-              target="_blank" //. open link in new tab
-              rel="noopener noreferrer" // As for the rel with these values, it is a security feature that prevents the new page from accessing
-              // the Window.open property and ensures that the new page runs in a separate process.
-            >
-              Read More
-            </a>
+
+            {/* Summarize Button */}
+            {!showSummary && (
+              <div className="summarize-section">
+                <button
+                  className="summarize-btn"
+                  onClick={generateSummary}
+                  disabled={isLoadingSummary}
+                >
+                  {isLoadingSummary ? (
+                    <>
+                      <i className="fa-solid fa-spinner fa-spin"></i>{" "}
+                      Summarizing...
+                    </>
+                  ) : (
+                    <>
+                      <i className="fa-solid fa-robot"></i> Summarize
+                    </>
+                  )}
+                </button>
+              </div>
+            )}
+
+            {/* AI Summary Section */}
+            {showSummary && (
+              <div className="ai-summary-section">
+                <h3 className="summary-title">
+                  <i className="fa-solid fa-robot"></i> Summary
+                </h3>
+
+                {summaryError && (
+                  <div className="summary-error">
+                    <i className="fa-solid fa-exclamation-triangle"></i>
+                    {summaryError}
+                  </div>
+                )}
+
+                {summary && Array.isArray(summary) && (
+                  <div className="summary-content">
+                    <ul className="summary-bullets">
+                      {summary.map((point, index) => (
+                        <li key={index}>{point}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Bottom Buttons */}
+            <div className="modal-buttons">
+              {showSummary && (
+                <button
+                  className="back-btn"
+                  onClick={() => setShowSummary(false)}
+                >
+                  <i className="fa-solid fa-arrow-left"></i> Back
+                </button>
+              )}
+
+              <a
+                href={article.url}
+                className="read-more-link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Read More
+              </a>
+            </div>
           </>
         )}
       </div>

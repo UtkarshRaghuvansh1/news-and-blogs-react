@@ -26,3 +26,9 @@ server/*
 
 
 src/components/WeatherCleanCode.jsx
+
+AI_SUMMARIZATION_IMPLEMENTATION_GUIDE.md
+INTERVIEW_QUESTIONS_AI_SUMMARIZATION.md
+RESPONSIVE_DESIGN_GUIDE.md
+
+src/testSummaryAlgo.js

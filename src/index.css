@@ -33,14 +33,19 @@ html {
    RESPONSIVE BREAKPOINTS
 =================================== */
 
-/* Large screens */
+/* Large screens (≤ 1400px) */
 @media (max-width: 1400px) {
   html {
     font-size: 59%;
   }
+  
+  .news-and-blog {
+    width: 98vw;
+    height: 98vh;
+  }
 }
 
-/* Tablets & smaller laptops */
+/* Tablets & smaller laptops (≤ 900px) */
 @media (max-width: 900px) {
   html {
     font-size: 57%;
@@ -58,11 +63,11 @@ html {
 
   .news-blogs-app {
     height: 100%;
-    max-height: 90vh;
+    max-height: 100vh;
   }
 }
 
-/* Small mobile devices */
+/* Mobile devices (≤ 500px) */
 @media (max-width: 500px) {
   html {
     font-size: 55%;
@@ -70,6 +75,7 @@ html {
 
   body {
     background: linear-gradient(to bottom right, #b88efc, #6877f4);
+    overflow-x: hidden;
   }
 
   .news-and-blog {
@@ -81,12 +87,64 @@ html {
 
   .container {
     padding: 0;
+    height: 100vh;
+  }
+
+  .news-blogs-app {
+    height: 100vh;
+    max-height: 100vh;
+    overflow: hidden;
   }
 }
 
-/* Extra small screens (for foldables) */
-@media (max-width: 350px) {
+/* Extra small screens (≤ 360px) */
+@media (max-width: 360px) {
   html {
     font-size: 52%;
+  }
+  
+  .news-and-blog {
+    width: 100vw;
+    height: 100vh;
+  }
+}
+
+/* Ultra small screens (≤ 320px) */
+@media (max-width: 320px) {
+  html {
+    font-size: 50%;
+  }
+}
+
+/* Landscape orientation for mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+  .news-and-blog {
+    height: 100vh;
+    overflow-y: auto;
+  }
+  
+  .news {
+    min-height: 100vh;
+  }
+  
+  .news-content {
+    flex-direction: row;
+    height: auto;
+    min-height: 100vh;
+  }
+  
+  .navbar {
+    width: 20rem;
+    height: 100vh;
+    flex-direction: column;
+  }
+  
+  .news-section {
+    width: calc(100% - 20rem);
+  }
+  
+  .my-blogs {
+    width: 20rem;
+    height: 100vh;
   }
 }

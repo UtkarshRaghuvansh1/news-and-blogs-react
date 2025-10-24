@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 
+// Time based caching
+// limit 1 hr -> Cache gets clear
+const CACHE_TIME_LIMIT = 60 * 60 * 1000; // 1hr
 // Cache the data so that when user select previusly visited category data is persisted instead fetching new data
 const apiCache = {};
 /**
@@ -19,10 +22,17 @@ export default function useFetch(url) {
     // 4️⃣ Skip API call if no URL is passed
     if (!url) return;
 
-    // If data is present in the cache Use that data to set the data
-    if (apiCache[url]) {
-      console.log("Using Cached Data", apiCache[url]);
-      setData(apiCache[url]);
+    // Check if entry exist in cache
+    // If Yes then diff between now and timestamp should be less then CACHE_TIME_LIMIT
+    // then that chachedEntry will be valid
+    const cachedEntry = apiCache[url];
+    const isCachedValid =
+      cachedEntry && Date.now() - cachedEntry.timestamp < CACHE_TIME_LIMIT;
+
+    // If valid cache then Use that data to set the data
+    if (isCachedValid) {
+      console.log("Using Cached Data less then 1hr: ", apiCache[url]);
+      setData(cachedEntry.data);
       setLoading(false);
       return;
     }
@@ -56,11 +66,22 @@ export default function useFetch(url) {
         // 7️⃣ Convert JSON response into JS object
         const res = await response.json();
         // Push the new data in the cache object
-        apiCache[url] = res;
+        // Also Add timestamp to make it time based cache
+        apiCache[url] = {
+          data: res,
+          timestamp: Date.now(),
+        };
+
         setData(res);
       } catch (error) {
         console.error("Error fetching news:", error);
-        setError(error.message); // Display actual HTTP error
+        // On error, check if we have STALE data we can use instead of nothing
+        if (cachedEntry) {
+          console.log("Using Stale Data due to fetch error.");
+          setData(cachedEntry.data);
+        } else {
+          setError(error.message); // Display actual HTTP error
+        }
       } finally {
         // 8️⃣ Stop loading after response/error
         setLoading(false);

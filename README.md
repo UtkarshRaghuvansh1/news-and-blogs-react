@@ -1157,9 +1157,7 @@ useEffect(() => {
 }, []);
 ```
 
-## Weather Component
-
-### Improve Efficiency of weather component
+## Improve Efficiency of weather component
 
 - In React, every time a component re-renders, all of its functions are re-created in memory — even if their logic hasn’t changed.
 
@@ -1202,3 +1200,110 @@ const handleSearch = useCallback(() => {
     - Less memory churn (fewer objects created/destroyed)
     - Fewer re-renders in child components
     - More stable references for useEffect or event listeners
+
+## Improved API Fetching and Caching strategy - News Component
+
+### Problem: Redundant API Calls and Rate Limits
+
+The application relies on frequent data updates from third-party APIs (News).
+
+- Rate Limit Risk: Standard practice dictates fetching data every time a component mounts or a category changes. Given the GNews API limit of 100 free calls per day, this model is unsustainable and risks downtime or incurring unexpected costs.
+
+- Performance Degradation: When a user clicks back to a recently visited category, the application would perform a full network fetch, causing unnecessary loading delays and a degraded user experience (especially on slower networks).
+
+- Data Freshness Conflict: For data that is time-sensitive (like weather) or updates hourly (like news feeds), a mechanism is required to balance data freshness against API call volume.
+
+### Optimization: Time-Based Caching Hook (useFetch)
+
+I implemented a custom React Hook, useFetch(url), which includes a robust, time-based, in-memory caching layer to prevent redundant requests.
+
+### Technical Implementation
+
+- **Global Cache:** A persistent, global JavaScript object (`apiCache`) stores fetched API responses keyed by their unique URL.
+
+```js
+// Time based caching
+// limit 1 hr -> Cache gets clear
+const CACHE_TIME_LIMIT = 60 * 60 * 1000; // 1hr
+// Cache the data so that when user select previusly visited category data is persisted instead fetching new data
+const apiCache = {};
+```
+
+- **Expiration Timestamp:** Each cache entry stores not just the `data`, but also a **`timestamp`** of when the data was successfully fetched.
+- **Lazy Expiration Logic:** Before initiating a network request, the hook checks the cache:
+
+  - **If data exists and is FRESH** (timestamp is less than the defined `CACHE_LIFETIME` of 1 hour): The cached data is returned **instantly**, and the API call is skipped (`return;`).
+
+  ```js
+  // Check if entry exist in cache
+  // If Yes then diff between now and timestamp should be less then CACHE_TIME_LIMIT
+  // then that chachedEntry will be valid
+  const cachedEntry = apiCache[url];
+  const isCachedValid =
+    cachedEntry && Date.now() - cachedEntry.timestamp < CACHE_TIME_LIMIT;
+
+  // If valid cache then Use that data to set the data
+  if (isCachedValid) {
+    console.log("Using Cached Data less then 1hr: ", apiCache[url]);
+    setData(cachedEntry.data);
+    setLoading(false);
+    return;
+  }
+  ```
+
+  - **If data exists and is STALE** (older than 1 hour): The network request is made. On success, the new data **overwrites** the stale data, refreshing the cache and the timestamp.
+
+  ```js
+  // 7️⃣ Convert JSON response into JS object
+  const res = await response.json();
+  // Push the new data in the cache object
+  // Also Add timestamp to make it time based cache
+  apiCache[url] = {
+    data: res,
+    timestamp: Date.now(),
+  };
+
+  setData(res);
+  ```
+
+- **Error Fallback:** If a network error occurs during a fetch, the hook attempts to serve the existing **stale data** from the cache instead of returning an error, prioritizing content delivery over immediate data freshness.
+
+```js
+ catch (error) {
+        console.error("Error fetching news:", error);
+        // On error, check if we have STALE data we can use instead of nothing
+        if (cachedEntry) {
+          console.log("Using Stale Data due to fetch error.");
+          setData(cachedEntry.data);
+        } else {
+          setError(error.message); // Display actual HTTP error
+        }
+      }
+```
+
+### Key Configuration
+
+| Parameter        | Value                   | Purpose                                                                                               |
+| :--------------- | :---------------------- | :---------------------------------------------------------------------------------------------------- |
+| `apiCache`       | `{}` (Global JS Object) | Stores data in the application's memory for the duration of the session.                              |
+| `CACHE_LIFETIME` | `3,600,000` ms (1 hour) | Defines how long data is considered "fresh" before a new API call is triggered for that specific URL. |
+
+---
+
+### Utility and Impact
+
+This custom caching strategy provides three major benefits to the application and its users:
+
+#### A. Performance & User Experience (UX)
+
+- **Near-Instant Loading:** Users revisiting a category or page within the 1-hour window experience immediate data rendering, **eliminating loading spinners** and improving navigation speed.
+- **Increased Responsiveness:** Reduced network latency results in a snappier, more professional feel for the application.
+
+#### B. Cost & Resource Management
+
+- **API Limit Conservation:** By aggressively caching results for up to an hour, we dramatically reduce the total number of external API calls made by the application, **conserving the daily fetch limit** and preventing application failure.
+- **Reduced Bandwidth:** Fewer API calls mean less data transfer, improving efficiency, particularly for mobile users.
+
+#### C. Developer Efficiency
+
+- **Centralized Logic:** State management (Loading, Error, Data) and caching logic are encapsulated in a single, **reusable hook**, reducing boilerplate code in components.

@@ -32,3 +32,6 @@ INTERVIEW_QUESTIONS_AI_SUMMARIZATION.md
 RESPONSIVE_DESIGN_GUIDE.md
 
 src/testSummaryAlgo.js
+
+.env
+.env.local

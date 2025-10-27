@@ -5,4 +5,7 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   base: "/news-and-blogs-react/",
+  define: {
+    "process.env": {}, // This can fix basic 'process is not defined' errors
+  },
 });

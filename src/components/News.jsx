@@ -1,6 +1,5 @@
 import Calender from "./Calender";
 import Weather from "./Weather";
-import WeatherCleanCode from "./WeatherCleanCode";
 import NewsModal from "./NewsModal";
 import BlogsModal from "./BlogsModal";
 import Bookmarks from "./Bookmarks";
@@ -152,13 +151,24 @@ export default function News({ onShowBlogs, blogs, onEditBlog, onDeleteBlog }) {
   // ********************************************************************. */
 
   // ******************** Custom hook to fetch the data *********************
-  const API_KEY = "e44e09001f7655277af07cd5512bf391";
-  let gnewsURL = `https://gnews.io/api/v4/top-headlines?category=${selectedCategory}&lang=en&apikey=${API_KEY}`;
-  //8.3 If there is search query then change the URL
+  // const API_KEY = "e44e09001f7655277af07cd5512bf391";
+  // let gnewsURL = `https://gnews.io/api/v4/top-headlines?category=${selectedCategory}&lang=en&apikey=${API_KEY}`;
+  // //8.3 If there is search query then change the URL
+  // if (searchQuery) {
+  //   gnewsURL = `https://gnews.io/api/v4/search?q=${searchQuery}&lang=en&apikey=${API_KEY}`;
+  // }
+
+  // const { data, loading, error } = useFetch(gnewsURL);
+
+  // 2. Change the base URL to your proxy:
+  let newsProxyURL = `/api/news?category=${selectedCategory}`;
+
+  // 3. Update the search query logic:
   if (searchQuery) {
-    gnewsURL = `https://gnews.io/api/v4/search?q=${searchQuery}&lang=en&apikey=${API_KEY}`;
+    newsProxyURL = `/api/news?searchQuery=${searchQuery}`;
   }
-  const { data, loading, error } = useFetch(gnewsURL);
+  // 4. Pass the new URL to your custom hook
+  const { data, loading, error } = useFetch(newsProxyURL);
 
   useEffect(() => {
     if (data && data.articles) {
@@ -538,7 +548,7 @@ export default function News({ onShowBlogs, blogs, onEditBlog, onDeleteBlog }) {
         <p>
           <span>News & Blogs App</span>
         </p>
-        <p>&copy; All Right Reserved. By Code And Create</p>
+        <p>&copy; All Right Reserved. By UR.dev</p>
       </footer>
     </div>
   );

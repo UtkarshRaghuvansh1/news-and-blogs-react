@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import "./Weather.css";
-const API_KEY = "0857bdfbf9822bcb5f4d0f481d5e160a";
+// const API_KEY = "0857bdfbf9822bcb5f4d0f481d5e160a";
 export default function Weather() {
   console.log("Weather Component Rendered");
   // 1. using open weather map api
@@ -23,7 +23,8 @@ export default function Weather() {
       // 5.1 set default location
       const defautLocation = "Bengaluru";
       // 5.2 Modify Url
-      const URL = `https://api.openweathermap.org/data/2.5/weather?q=${defautLocation}&units=Metric&appid=${API_KEY}`;
+      // const URL = `https://api.openweathermap.org/data/2.5/weather?q=${defautLocation}&units=Metric&appid=${API_KEY}`;
+      const URL = `/api/weather?location=${defautLocation}`;
 
       // 5.3 http request to fecth the information
       const defaultResponse = await axios.get(URL);
@@ -38,7 +39,8 @@ export default function Weather() {
   const search = useCallback(async () => {
     try {
       console.log("Search Click works");
-      const URL = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=Metric&appid=${API_KEY}`;
+      // const URL = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=Metric&appid=${API_KEY}`;
+      const URL = `/api/weather?location=${location}`;
 
       // 1.3 http get request using axios
       const response = await axios.get(URL);

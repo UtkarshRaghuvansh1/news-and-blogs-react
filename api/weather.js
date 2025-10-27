@@ -5,6 +5,12 @@ import fetch from "node-fetch";
 export default async (req, res) => {
   // Key is accessed securely from the hosting environment
   const OPENWEATHER_API_KEY = process.env.OPENWEATHER_API_KEY;
+  // --- ADDED CHECK ---
+  if (!OPENWEATHER_API_KEY) {
+    return res
+      .status(500)
+      .json({ error: "Server misconfiguration: Weather API key missing." });
+  }
 
   // Extract parameters (like 'q' for location) from the frontend request
   const { location, units = "Metric" } = req.query;

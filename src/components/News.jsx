@@ -3,6 +3,7 @@ import Weather from "./Weather";
 import WeatherCleanCode from "./WeatherCleanCode";
 import NewsModal from "./NewsModal";
 import BlogsModal from "./BlogsModal";
+import Bookmarks from "./Bookmarks";
 import "./News.css";
 import useImg from "../assets/images/user.jpeg";
 // import techImg from "../assets/images/tech.jpg";
@@ -66,6 +67,9 @@ export default function News({ onShowBlogs, blogs, onEditBlog, onDeleteBlog }) {
   const [selectedPost, setSelectedPost] = useState(null);
   // Blog post modal is visible or not
   const [showBlogModal, setShowBlogModal] = useState(false);
+
+  const [bookmarks, setBookmarks] = useState([]);
+  const [showBookmarksModal, setShowBookmarksModal] = useState(false);
 
   /* ******************************* Old Code **************************************
   // 2. Use effect for performing side effect (fetching data from api)
@@ -253,6 +257,25 @@ export default function News({ onShowBlogs, blogs, onEditBlog, onDeleteBlog }) {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  // ****************** Bookmark *********
+  useEffect(() => {
+    const saved = localStorage.getItem("bookmarks");
+    if (saved) setBookmarks(JSON.parse(saved));
+  }, []);
+
+  // Add article to bookmarks
+  const handleBookmarkClick = (article) => {
+    setBookmarks((prevBookmarks) => {
+      const updatedBookmarks = prevBookmarks.find(
+        (bookmark) => bookmark.title === article.title
+      )
+        ? prevBookmarks.filter((bookmark) => bookmark.title !== article.title)
+        : [...prevBookmarks, article];
+      localStorage.setItem("bookmarks", JSON.stringify(updatedBookmarks));
+      return updatedBookmarks;
+    });
+  };
+
   return (
     <div className="news">
       <header className="news-header">
@@ -304,7 +327,11 @@ export default function News({ onShowBlogs, blogs, onEditBlog, onDeleteBlog }) {
                 );
               })}
 
-              <a href="" className="nav-link">
+              <a
+                href="#"
+                className="nav-link"
+                onClick={() => setShowBookmarksModal(true)}
+              >
                 Bookmarks <i className="fa-regular fa-bookmark"></i>
               </a>
             </div>
@@ -336,7 +363,19 @@ export default function News({ onShowBlogs, blogs, onEditBlog, onDeleteBlog }) {
               />
               <h2 className="headline-title">
                 {headline.title}
-                <i className="fa-regular fa-bookmark bookmark"></i>
+                <i
+                  className={`${
+                    bookmarks.some(
+                      (bookmark) => bookmark.title === headline.title
+                    )
+                      ? "fa-solid"
+                      : "fa-regular"
+                  } fa-bookmark bookmark`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleBookmarkClick(headline);
+                  }}
+                ></i>
               </h2>
             </div>
           ) : (
@@ -367,24 +406,42 @@ export default function News({ onShowBlogs, blogs, onEditBlog, onDeleteBlog }) {
                       />
                       <h3>
                         {article.title}
-                        <i className="fa-regular fa-bookmark bookmark"></i>
+                        <i
+                          className={`${
+                            bookmarks.some(
+                              (bookmark) => bookmark.title === article.title
+                            )
+                              ? "fa-solid"
+                              : "fa-regular"
+                          } fa-bookmark bookmark`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleBookmarkClick(article);
+                          }}
+                        ></i>
                       </h3>
                     </div>
                   );
                 })}
-              </div>
-              {/*Modal Box Component creation  */}
-              {/* // 11.4 Now we need to0 pass some Props to NewsModal component
+                {/*Modal Box Component creation  */}
+                {/* // 11.4 Now we need to0 pass some Props to NewsModal component
               from News component */}
-              {/* showModal prop -> control visibility of modal  */}
-              {/* article prop -> contains the detail of the article that we want to display in Modal  */}
-              {/* onClose prop -> Handle the action of closing the modal when user wants to close */}
-              <NewsModal
-                show={showModal}
-                article={selectedArticle}
-                onClose={() => setShowModal(false)}
-              />
-              {/* <Bookmarks onClose={() => setShowModal(false)} /> */}
+                {/* showModal prop -> control visibility of modal  */}
+                {/* article prop -> contains the detail of the article that we want to display in Modal  */}
+                {/* onClose prop -> Handle the action of closing the modal when user wants to close */}
+                <NewsModal
+                  show={showModal}
+                  article={selectedArticle}
+                  onClose={() => setShowModal(false)}
+                />
+                <Bookmarks
+                  show={showBookmarksModal}
+                  bookmarks={bookmarks}
+                  onClose={() => setShowBookmarksModal(false)}
+                  onSelectArticle={handleArticle}
+                  onDeleteBookmark={handleBookmarkClick}
+                />
+              </div>
             </>
           ) : null}
         </div>
@@ -476,7 +533,13 @@ export default function News({ onShowBlogs, blogs, onEditBlog, onDeleteBlog }) {
         </div>
       </div>
       {/* Footer  */}
-      <div className="news-footer">Footer</div>
+
+      <footer className="news-footer">
+        <p>
+          <span>News & Blogs App</span>
+        </p>
+        <p>&copy; All Right Reserved. By Code And Create</p>
+      </footer>
     </div>
   );
 }

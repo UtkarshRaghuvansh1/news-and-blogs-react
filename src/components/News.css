@@ -296,6 +296,21 @@
   min-height: 5rem;
   background-color: #111214;
   border-radius: 0 0 1rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4rem;
+}
+
+.news-footer p {
+  font-size: 1.4rem;
+  font-weight: 300;
+  color: #bbb;
+}
+
+.news-footer p span {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 2rem;
 }
 
 /* ************************************ My Blog Section ********************************************* */
@@ -429,21 +444,21 @@
     height: calc(80% - 2rem);
     overflow-y: auto;
   }
-  
+
   .nav-links {
     gap: 1.2rem;
   }
-  
+
   .nav-link {
     font-size: 1.4rem;
     padding: 1.2rem 1.8rem;
     min-height: 3.5rem;
   }
-  
+
   .nav-link:hover {
     transform: translateX(0.8rem);
   }
-  
+
   .nav-link i {
     font-size: 1.8rem;
   }
@@ -454,32 +469,32 @@
   .news-content {
     column-gap: 1.5rem;
   }
-  
+
   .news-grid {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(3, 1fr);
     overflow-y: auto;
     width: 100%;
   }
-  
+
   .news-grid::-webkit-scrollbar {
     width: 4px;
   }
-  
+
   .news-grid::-webkit-scrollbar-track {
     background: #333;
     border-radius: 2px;
   }
-  
+
   .news-grid::-webkit-scrollbar-thumb {
     background: #666;
     border-radius: 2px;
   }
-  
+
   .my-blogs {
     width: 35%;
   }
-  
+
   /* Keep categories vertical on large screens */
   .categories {
     width: 100%;
@@ -488,12 +503,12 @@
     justify-content: flex-start;
     gap: 2rem;
   }
-  
+
   .nav-links {
     flex-direction: column;
     gap: 1.5rem;
   }
-  
+
   .nav-link {
     font-size: 1.4rem;
     padding: 0.8rem 1rem;
@@ -502,13 +517,13 @@
     transition: all 0.3s ease;
     border: 1px solid transparent;
   }
-  
+
   .nav-link:hover {
     background: rgba(255, 77, 77, 0.1);
     border-color: rgba(255, 77, 77, 0.3);
     transform: translateX(0.5rem);
   }
-  
+
   .nav-link.active {
     background: rgba(255, 77, 77, 0.15);
     border-color: #ff4d4d;
@@ -521,51 +536,51 @@
   .news-content {
     column-gap: 1rem;
   }
-  
+
   .news-grid {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(3, 1fr);
     overflow-y: auto;
   }
-  
+
   .news-grid::-webkit-scrollbar {
     width: 3px;
   }
-  
+
   .my-blogs {
     width: 100%;
     margin-top: 2rem;
   }
-  
+
   .post-buttons {
     opacity: 1 !important;
     visibility: visible !important;
   }
-  
+
   .blog-posts {
     gap: 1rem;
   }
-  
+
   .blog-post {
     flex: 0 1 calc(50% - 0.5rem);
   }
-  
+
   /* Categories for tablets */
   .categories {
     height: calc(80% - 2rem);
     overflow-y: auto;
   }
-  
+
   .nav-links {
     gap: 1rem;
   }
-  
+
   .nav-link {
     font-size: 1.3rem;
     padding: 0.8rem 1.2rem;
     min-height: 3rem;
   }
-  
+
   .nav-link:hover {
     transform: translateX(0.4rem);
   }
@@ -661,17 +676,17 @@
     flex-direction: row;
     column-gap: 2rem;
   }
-  
+
   .post-buttons {
     opacity: 1 !important;
     visibility: visible !important;
   }
-  
+
   .my-blogs-heading {
     font-size: 2.5rem;
     padding: 1.5rem;
   }
-  
+
   .blog-post h3 {
     font-size: 1.4rem;
     line-height: 1.4rem;
@@ -852,11 +867,8 @@
     padding: 0.4rem 0.7rem;
     font-size: 0.9rem;
   }
-
   .news-footer {
-    min-height: 6rem;
-    padding: 1rem;
-    text-align: center;
+    display: none;
   }
 }
 

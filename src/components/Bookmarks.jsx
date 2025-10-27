@@ -1,6 +1,6 @@
 import React from "react";
 import "./Modal.css";
-import demoImg from "../assets/images/demo.jpg";
+// import demoImg from "../assets/images/demo.jpg";
 import noImg from "../assets/images/no-img.png";
 import "./Bookmarks.css";
 
